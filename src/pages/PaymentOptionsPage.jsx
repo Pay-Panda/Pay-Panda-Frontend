@@ -8,8 +8,8 @@ import useStagger from '../hooks/useStagger';
 
 const options = [
   { value: 'qr', icon: QrCode, title: 'QR only', description: 'Show only the amount-specific UPI QR on the hosted checkout.' },
-  { value: 'button', icon: Smartphone, title: 'UPI intent button', description: 'Show a one-tap "Pay with a UPI app" button for mobile customers.' },
-  { value: 'both', icon: Layers, title: 'Both (recommended)', description: 'Show the QR and the intent button together, matching the current checkout.' },
+  { value: 'button', icon: Smartphone, title: 'UPI QR share button', description: 'Share the generated QR image to mobile UPI apps instead of opening a raw intent link.' },
+  { value: 'both', icon: Layers, title: 'Both (recommended)', description: 'Show the QR and the QR share button together, matching the current checkout.' },
 ];
 
 export default function PaymentOptionsPage() {
@@ -29,7 +29,7 @@ export default function PaymentOptionsPage() {
     finally { setBusy(false); }
   };
   return <div ref={rootRef}>
-    <PageHeader eyebrow="Gateway setup" title="Payment options" description="Control which QR and UPI intent elements appear on your hosted checkout." />
+    <PageHeader eyebrow="Gateway setup" title="Payment options" description="Control which QR and UPI app payment elements appear on your hosted checkout." />
     <div className="create-grid">
       <section className="panel">
         <div className="panel-heading"><div><h3>Checkout layout</h3><p>Choose what customers see when they open a payment link.</p></div>{busy && <RefreshCw className="spin" size={16}/>}</div>

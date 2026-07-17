@@ -20,7 +20,10 @@
 .qr-shell { width: 248px; height: 248px; margin: 28px auto 10px; padding: 10px; background: #fff; border-radius: 17px; box-shadow: 0 0 0 7px rgba(255, 255, 255, .05); }
 .qr-shell img { width: 100%; height: 100%; display: block; }
 .scan-copy { text-align: center; font-size: var(--font-small); color: var(--muted); margin-bottom: 24px; }
-.upi-pay-button { height: 42px; margin: 0 auto 18px; width: 248px; border: 1px solid var(--accent-line); background: var(--accent-soft); color: var(--accent-contrast); border-radius: var(--radius-md); display: flex; align-items: center; justify-content: center; gap: 7px; font-size: var(--font-small); font-weight: 700; }
+.upi-share-wrap { display: grid; justify-items: center; gap: 7px; margin: 0 auto 18px; }
+.upi-share-wrap small { max-width: 260px; color: var(--muted); font-size: var(--font-micro); line-height: 1.45; text-align: center; }
+.upi-pay-button { height: 42px; margin: 0 auto; width: 248px; border: 1px solid var(--accent-line); background: var(--accent-soft); color: var(--accent-contrast); border-radius: var(--radius-md); display: flex; align-items: center; justify-content: center; gap: 7px; font-size: var(--font-small); font-weight: 700; }
+.upi-pay-button:disabled { opacity: .7; cursor: wait; }
 .upi-pay-button svg { width: 16px; }
 
 .checkout-person { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 8px; }
