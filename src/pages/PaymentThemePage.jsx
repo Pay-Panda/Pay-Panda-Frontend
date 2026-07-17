@@ -1,6 +1,9 @@
-import { useRef, useState } from 'react';
-import { Check, Smartphone } from 'lucide-react';
+import { useEffect, useRef, useState } from 'react';
+import { Check, RefreshCw, Smartphone } from 'lucide-react';
+import api from '../lib/api';
 import PageHeader from '../components/PageHeader';
+import { useAuth } from '../state/auth-store';
+import { useUi } from '../state/ui-store';
 import useStagger from '../hooks/useStagger';
 
 const templates = [
@@ -12,18 +15,30 @@ const templates = [
 
 export default function PaymentThemePage() {
   const rootRef = useRef(null);
+  const { user } = useAuth();
+  const { toast } = useUi();
   const [active, setActive] = useState('midnight');
+  const [busy, setBusy] = useState(false);
+  useEffect(() => { if (user?.business?.theme) setActive(user.business.theme); }, [user]);
   useStagger(rootRef, '.theme-swatch');
   const t = templates.find(item => item.id === active);
   const vars = { '--swatch-bg': t.bg, '--swatch-panel': t.panel, '--swatch-accent': t.accent, '--swatch-text': t.text, '--swatch-muted': t.muted };
+  const choose = async id => {
+    if (id === active || busy) return;
+    const previous = active;
+    setActive(id); setBusy(true);
+    try { await api.patch('/dashboard/theme', { theme: id }); toast('Checkout theme saved'); }
+    catch (err) { setActive(previous); toast(err.response?.data?.message || 'Could not save theme', 'error'); }
+    finally { setBusy(false); }
+  };
 
   return <div ref={rootRef}>
-    <PageHeader eyebrow="Gateway setup" title="Payment page theme" description="Brand the hosted checkout with your logo, colors, and an entirely different page layout — not just a recolor." action={<span className="preview-badge">Preview</span>} />
+    <PageHeader eyebrow="Gateway setup" title="Payment page theme" description="Brand the hosted checkout with your logo, colors, and an entirely different page layout — not just a recolor." />
     <div className="create-grid">
       <section className="panel">
-        <div className="panel-heading"><div><h3>Theme presets</h3><p>Each preset is its own layout template, not just a different palette.</p></div></div>
+        <div className="panel-heading"><div><h3>Theme presets</h3><p>Each preset is its own layout template, not just a different palette.</p></div>{busy && <RefreshCw className="spin" size={16}/>}</div>
         <div className="theme-grid">
-          {templates.map(item => <button type="button" className={`theme-swatch ${active === item.id ? 'active' : ''}`} key={item.id} onClick={() => setActive(item.id)} style={{ '--swatch-bg': item.bg, '--swatch-accent': item.accent, '--swatch-text': item.text }}>
+          {templates.map(item => <button type="button" className={`theme-swatch ${active === item.id ? 'active' : ''}`} key={item.id} onClick={() => choose(item.id)} style={{ '--swatch-bg': item.bg, '--swatch-accent': item.accent, '--swatch-text': item.text }}>
             <span className="theme-swatch-preview" />
             <strong>{item.name}</strong>
             <small>{item.layout}</small>

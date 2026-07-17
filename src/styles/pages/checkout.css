@@ -52,3 +52,50 @@
 .confetti-piece { position: absolute; top: 75px; width: 8px; height: 12px; border-radius: 2px; z-index: 2; }
 
 [data-theme="light"] .checkout { background: #eef1f7; }
+
+/* Payment page themes — each is a distinct layout template (not just a recolor),
+   matching the presets shown on the dashboard's Payment page theme screen. */
+.checkout.theme-daylight { background: #eef1f7; }
+.checkout.theme-daylight .checkout-orb.one { background: radial-gradient(circle, color-mix(in srgb, #6d28d9 18%, transparent), transparent 70%); }
+.checkout.theme-daylight .checkout-orb.two { background: radial-gradient(circle, color-mix(in srgb, #0ea5e9 14%, transparent), transparent 70%); }
+.checkout.theme-daylight .pay-card { background: #ffffff; border-color: #dfe4ed; color: #172033; }
+.checkout.theme-daylight .checkout-person > div, .checkout.theme-daylight .payment-detail, .checkout.theme-daylight .receipt-row { border-color: #e5e9f0; }
+.checkout.theme-daylight .upi-pay-button { background: color-mix(in srgb, #6d28d9 10%, transparent); border-color: color-mix(in srgb, #6d28d9 30%, transparent); color: #6d28d9; }
+.checkout.theme-daylight .checkout-status { color: #b45f06; }
+.pay-card.layout-daylight { width: min(620px, 100%); padding: 26px; }
+.checkout-split { display: grid; grid-template-columns: 1.1fr .9fr; gap: 22px; align-items: start; }
+.checkout-split-pay { display: flex; flex-direction: column; align-items: center; padding-top: 4px; }
+.checkout-split-pay .qr-shell { margin-top: 0; }
+
+.checkout.theme-emerald { background: #0d1a16; }
+.checkout.theme-emerald .checkout-orb.one { background: radial-gradient(circle, color-mix(in srgb, #0d9c74 30%, transparent), transparent 70%); }
+.checkout.theme-emerald .checkout-orb.two { background: radial-gradient(circle, color-mix(in srgb, #0d9c74 20%, transparent), transparent 70%); }
+.checkout.theme-emerald .pay-card { background: #0d1a16; border-color: color-mix(in srgb, #0d9c74 24%, transparent); color: #eafff6; }
+.checkout.theme-emerald .upi-pay-button { background: color-mix(in srgb, #0d9c74 14%, transparent); border-color: color-mix(in srgb, #0d9c74 34%, transparent); color: #4fe3b4; }
+.pay-card.layout-emerald { text-align: center; padding: 34px 22px; }
+.pay-card.layout-emerald .qr-shell { margin-top: 0; width: 264px; height: 264px; }
+.checkout-minimal-amount { display: block; font-size: 30px; margin-top: 6px; }
+.checkout-minimal-name { color: #7fae9c; font-size: var(--font-small); margin-bottom: 18px; }
+.pay-card.layout-emerald .checkout-status { justify-content: center; margin-top: 18px; }
+
+.checkout.theme-sunrise { background: #1a1410; }
+.checkout.theme-sunrise .checkout-orb.one { background: radial-gradient(circle, color-mix(in srgb, #f59e0b 26%, transparent), transparent 70%); }
+.checkout.theme-sunrise .checkout-orb.two { background: radial-gradient(circle, color-mix(in srgb, #f59e0b 16%, transparent), transparent 70%); }
+.checkout.theme-sunrise .pay-card { background: #221a12; border-color: color-mix(in srgb, #f59e0b 22%, transparent); color: #fff3e0; padding: 0 0 22px; overflow: hidden; }
+.checkout.theme-sunrise .upi-pay-button { background: color-mix(in srgb, #f59e0b 16%, transparent); border-color: color-mix(in srgb, #f59e0b 36%, transparent); color: #f5b942; }
+.checkout.theme-sunrise .checkout-head { padding: 20px 22px; background: linear-gradient(135deg, #f59e0b, #d97706); color: #1a1410; }
+.checkout.theme-sunrise .checkout-brand { background: rgba(255,255,255,.35); color: #1a1410; }
+.checkout.theme-sunrise .checkout-head p { color: rgba(26,20,16,.7); }
+.checkout-banner-body { padding: 22px 22px 0; }
+.checkout.theme-sunrise footer { padding: 0 22px; margin-top: 18px; }
+
+@media (max-width: 620px) {
+  .checkout-split { grid-template-columns: 1fr; }
+  .pay-card.layout-daylight { width: min(420px, 100%); }
+}
+
+.default-link-form label { display: block; margin: 16px 0 0; font-size: var(--font-small); color: var(--text-secondary); font-weight: 650; }
+.default-link-form input { display: block; width: 100%; height: 43px; margin-top: 7px; border: 1px solid var(--line-strong); background: var(--panel-inset); border-radius: var(--radius-md); color: var(--text); padding: 0 13px; outline: none; }
+.default-link-form input:focus { border-color: var(--accent); box-shadow: 0 0 0 3px var(--accent-soft); }
+.default-link-form .primary-button { width: 100%; margin-top: 20px; }
+.default-link-note { margin-top: 12px; font-size: var(--font-small); color: var(--muted); }

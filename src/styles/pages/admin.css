@@ -1,0 +1,39 @@
+.admin-grid { display: grid; grid-template-columns: minmax(0, 1.4fr) minmax(260px, .6fr); gap: 18px; margin-bottom: 18px; }
+.panel-body { padding: 20px 22px; }
+
+.admin-chart { position: relative; padding: 4px 22px 18px; }
+.admin-chart svg { width: 100%; height: auto; display: block; overflow: visible; }
+.admin-chart-tooltip {
+  position: absolute; top: 8px; transform: translateX(-50%); pointer-events: none;
+  padding: 8px 11px; background: var(--panel-2); border: 1px solid var(--line-strong); border-radius: var(--radius-sm);
+  box-shadow: var(--shadow-md); white-space: nowrap; text-align: center;
+}
+.admin-chart-tooltip strong { display: block; font-size: var(--font-small); }
+.admin-chart-tooltip span { display: block; font-size: var(--font-micro); color: var(--muted); margin-top: 2px; }
+
+.plan-distribution { padding: 8px 22px 20px; display: grid; gap: 2px; }
+.plan-distribution-row { display: flex; align-items: center; justify-content: space-between; padding: 11px 0; border-bottom: 1px solid var(--line); font-size: var(--font-small); }
+.plan-distribution-row:last-child { border: 0; }
+.plan-distribution-row strong { color: var(--accent-contrast); }
+
+.admin-select {
+  height: 36px; padding: 0 30px 0 12px; border: 1px solid var(--line); background: var(--panel-inset);
+  border-radius: var(--radius-sm); color: var(--text); font-size: var(--font-small);
+}
+.admin-pagination { display: flex; align-items: center; justify-content: space-between; padding: 15px 20px; border-top: 1px solid var(--line); font-size: var(--font-small); color: var(--muted); }
+.admin-pagination .secondary-button { margin: 0; height: 34px; padding: 0 14px; }
+
+.admin-plan-select { margin: 20px 22px; }
+.admin-platform-toggle { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin: 4px 22px 22px; padding: 13px; border: 1px solid var(--line); border-radius: var(--radius-md); }
+.admin-platform-toggle strong { font-size: var(--font-small); }
+.admin-platform-toggle p { font-size: var(--font-micro); color: var(--muted); margin-top: 4px; }
+.admin-textarea {
+  display: block; width: 100%; border: 1px solid var(--line-strong); background: var(--panel-inset);
+  border-radius: var(--radius-md); color: var(--text); padding: 10px 13px; outline: none; margin-top: 7px;
+  font-family: inherit; font-size: var(--font-body); resize: vertical;
+}
+.admin-textarea:focus { border-color: var(--accent); box-shadow: 0 0 0 3px var(--accent-soft); }
+
+@media (max-width: 1050px) {
+  .admin-grid { grid-template-columns: 1fr; }
+}

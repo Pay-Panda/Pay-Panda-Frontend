@@ -1,7 +1,14 @@
 import { Navigate, Route, Routes } from 'react-router-dom';
 import { useAuth } from './state/auth-store';
+import { useAdminAuth } from './state/admin-auth-store';
 import AppLayout from './components/AppLayout';
+import AdminLayout from './components/admin/AdminLayout';
 import AuthLoader from './components/AuthLoader';
+import AdminLoginPage from './pages/admin/AdminLoginPage';
+import AdminOverviewPage from './pages/admin/AdminOverviewPage';
+import AdminBusinessesPage from './pages/admin/AdminBusinessesPage';
+import AdminBusinessDetailPage from './pages/admin/AdminBusinessDetailPage';
+import AdminPlansPage from './pages/admin/AdminPlansPage';
 import AuthPage from './pages/AuthPage';
 import LandingPage from './pages/LandingPage';
 import DashboardPage from './pages/DashboardPage';
@@ -10,6 +17,7 @@ import ApiKeysPage from './pages/ApiKeysPage';
 import CreatePaymentPage from './pages/CreatePaymentPage';
 import HistoryPage from './pages/HistoryPage';
 import CheckoutPage from './pages/CheckoutPage';
+import DefaultLinkCheckoutPage from './pages/DefaultLinkCheckoutPage';
 import ActivationPage from './pages/ActivationPage';
 import SettingsPage from './pages/SettingsPage';
 import ForgotPasswordPage from './pages/ForgotPasswordPage';
@@ -28,6 +36,12 @@ function Protected() {
   return token ? <AppLayout /> : <Navigate to="/login" replace />;
 }
 
+function AdminProtected() {
+  const { token, loading } = useAdminAuth();
+  if (loading) return <AuthLoader fullPage label="Checking your session…" />;
+  return token ? <AdminLayout /> : <Navigate to="/admin/login" replace />;
+}
+
 export default function App() {
   return <Routes>
     <Route path="/" element={<LandingPage />} />
@@ -36,6 +50,7 @@ export default function App() {
     <Route path="/activate" element={<ActivationPage />} />
     <Route path="/forgot-password" element={<ForgotPasswordPage />} />
     <Route path="/reset-password" element={<ResetPasswordPage />} />
+    <Route path="/pay/link/:slug" element={<DefaultLinkCheckoutPage />} />
     <Route path="/pay/:publicId" element={<CheckoutPage />} />
     <Route element={<Protected />}>
       <Route path="/dashboard" element={<DashboardPage />} />
@@ -52,6 +67,14 @@ export default function App() {
       <Route path="/documentation" element={<DocumentationPage />} />
       <Route path="/default-link" element={<DefaultLinkPage />} />
       <Route path="/subscription-history" element={<SubscriptionHistoryPage />} />
+    </Route>
+    <Route path="/admin/login" element={<AdminLoginPage />} />
+    <Route element={<AdminProtected />}>
+      <Route path="/admin/overview" element={<AdminOverviewPage />} />
+      <Route path="/admin/businesses" element={<AdminBusinessesPage />} />
+      <Route path="/admin/businesses/:id" element={<AdminBusinessDetailPage />} />
+      <Route path="/admin/plans" element={<AdminPlansPage />} />
+      <Route path="/admin" element={<Navigate to="/admin/overview" replace />} />
     </Route>
     <Route path="*" element={<Navigate to="/dashboard" replace />} />
   </Routes>;
