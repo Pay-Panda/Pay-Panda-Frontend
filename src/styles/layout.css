@@ -25,7 +25,42 @@
 .nav-section a.active { background: linear-gradient(90deg, var(--accent-soft), transparent); color: var(--accent-contrast); }
 .nav-section a.active svg:first-child { color: var(--accent-contrast); }
 .nav-arrow { margin-left: auto; opacity: .35; }
-.sidebar-bottom { padding: 12px 13px 18px; border-top: 1px solid var(--line); }
+.sidebar-bottom {
+  padding: 14px 16px;
+  border-top: 1px solid var(--line);
+  display: flex;
+  gap: 8px;
+}
+.sidebar-bottom a, .sidebar-bottom button {
+  flex: 1;
+  height: 38px;
+  padding: 0 !important;
+  display: flex !important;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--line);
+  background: var(--panel-inset);
+  color: var(--muted);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  width: auto !important;
+}
+.sidebar-bottom a:hover, .sidebar-bottom button:hover {
+  background: var(--panel-2) !important;
+  color: var(--text) !important;
+  border-color: var(--line-strong) !important;
+}
+.sidebar-bottom button.logout-btn {
+  border-color: color-mix(in srgb, var(--red) 25%, transparent) !important;
+  background: var(--red-soft) !important;
+  color: var(--red) !important;
+}
+.sidebar-bottom button.logout-btn:hover {
+  background: var(--red) !important;
+  color: #fff !important;
+  border-color: var(--red) !important;
+}
 
 .main { margin-left: 272px; width: calc(100% - 272px); min-height: 100vh; }
 .sidebar, .main { transition: width .24s ease, margin-left .24s ease; }
@@ -43,11 +78,37 @@
 .top-actions { display: flex; align-items: center; gap: 12px; }
 .icon-button, .menu-button, .mobile-close { border: 1px solid var(--line); background: var(--panel); width: 38px; height: 38px; border-radius: var(--radius-md); display: grid; place-items: center; }
 .menu-button, .mobile-close { display: none; }
-.user-chip { display: flex; align-items: center; gap: 9px; padding: 5px 9px 5px 5px; border: 1px solid var(--line); border-radius: var(--radius-lg); background: var(--panel); }
-.user-chip > span { width: 31px; height: 31px; display: grid; place-items: center; background: var(--panel-2); border-radius: var(--radius-sm); font-weight: 700; }
+.user-chip {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 5px 12px 5px 6px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-full);
+  background: var(--panel-2);
+  transition: all 0.2s ease;
+  cursor: pointer;
+}
+.user-chip:hover {
+  border-color: var(--accent-line);
+  box-shadow: var(--shadow-sm);
+  background: var(--panel);
+}
+.user-chip > span {
+  width: 31px;
+  height: 31px;
+  display: grid;
+  place-items: center;
+  background: linear-gradient(135deg, var(--accent), #3b82f6);
+  color: #fff;
+  border-radius: var(--radius-full);
+  font-weight: 700;
+  font-size: 12px;
+  box-shadow: 0 0 0 2px var(--line), 0 2px 5px rgba(0, 0, 0, 0.2);
+}
 .user-chip strong, .user-chip small { display: block; }
-.user-chip strong { font-size: var(--font-small); }
-.user-chip small { font-size: 10px; color: var(--muted); margin-top: 2px; }
+.user-chip strong { font-size: var(--font-small); font-weight: 650; }
+.user-chip small { font-size: 10px; color: var(--muted); margin-top: 1px; }
 
 .page { padding: 30px 32px 48px; max-width: 1500px; margin: auto; }
 .page-header { display: flex; align-items: flex-end; justify-content: space-between; gap: 20px; margin-bottom: 26px; }
@@ -70,9 +131,23 @@
 .sidebar-collapsed .nav-section a { padding: 0; justify-content: center; gap: 0; }
 .sidebar-collapsed .nav-section a span, .sidebar-collapsed .nav-arrow { display: none; }
 .sidebar-collapsed .nav-section a svg:first-child { width: 19px; height: 19px; }
-.sidebar-collapsed .sidebar-bottom { padding: 12px 10px 18px; }
-.sidebar-collapsed .sidebar-bottom a, .sidebar-collapsed .sidebar-bottom button { padding: 0; justify-content: center; gap: 0; font-size: 0; }
-.sidebar-collapsed .sidebar-bottom svg { width: 19px; height: 19px; }
+.sidebar-collapsed .sidebar-bottom {
+  padding: 12px 10px 18px;
+  flex-direction: column;
+  gap: 6px;
+}
+.sidebar-collapsed .sidebar-bottom a, .sidebar-collapsed .sidebar-bottom button {
+  width: 100% !important;
+  height: 38px;
+  padding: 0;
+  justify-content: center;
+  gap: 0;
+  font-size: 0;
+}
+.sidebar-collapsed .sidebar-bottom svg {
+  width: 18px;
+  height: 18px;
+}
 
 /* Collapsed-sidebar hover label: portaled to document.body by SidebarTooltip.jsx (positioned
    via inline top/left), not a CSS pseudo-element, so it never contributes to .nav-scroll's
@@ -121,8 +196,8 @@
   .sidebar-collapsed .nav-section a { padding: 0 11px; justify-content: flex-start; gap: 11px; }
   .sidebar-collapsed .nav-section a span, .sidebar-collapsed .nav-arrow { display: initial; }
   .sidebar-collapsed .nav-arrow { margin-left: auto; }
-  .sidebar-collapsed .sidebar-bottom { padding: 12px 13px 18px; }
-  .sidebar-collapsed .sidebar-bottom a, .sidebar-collapsed .sidebar-bottom button { padding: 0 11px; justify-content: flex-start; gap: 11px; font-size: var(--font-body); }
+  .sidebar-collapsed .sidebar-bottom { padding: 14px 16px; }
+  .sidebar-collapsed .sidebar-bottom a, .sidebar-collapsed .sidebar-bottom button { padding: 0 !important; justify-content: center !important; width: auto !important; }
   .sidebar-toggle { display: none; }
 }
 @media (max-width: 560px) {

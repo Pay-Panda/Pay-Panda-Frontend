@@ -78,9 +78,9 @@ export default function AppLayout() {
         </div>)}
       </nav>
       <div className="sidebar-bottom">
-        <NavLink to="/settings" aria-label="Settings" onMouseEnter={event => showTooltip(event, 'Settings')} onMouseLeave={hideTooltip} onFocus={event => showTooltip(event, 'Settings')} onBlur={hideTooltip}><Settings size={18}/>Settings</NavLink>
-        <a href="mailto:support@paypanda.local" aria-label="Support" onMouseEnter={event => showTooltip(event, 'Support')} onMouseLeave={hideTooltip} onFocus={event => showTooltip(event, 'Support')} onBlur={hideTooltip}><Headphones size={18}/>Support</a>
-        <button onClick={logout} aria-label="Logout" onMouseEnter={event => showTooltip(event, 'Logout')} onMouseLeave={hideTooltip} onFocus={event => showTooltip(event, 'Logout')} onBlur={hideTooltip}><LogOut size={18}/>Logout</button>
+        <NavLink to="/settings" aria-label="Settings" onMouseEnter={event => showTooltip(event, 'Settings')} onMouseLeave={hideTooltip} onFocus={event => showTooltip(event, 'Settings')} onBlur={hideTooltip}><Settings size={18}/></NavLink>
+        <a href="mailto:support@paypanda.local" aria-label="Support" onMouseEnter={event => showTooltip(event, 'Support')} onMouseLeave={hideTooltip} onFocus={event => showTooltip(event, 'Support')} onBlur={hideTooltip}><Headphones size={18}/></a>
+        <button className="logout-btn" onClick={logout} aria-label="Logout" onMouseEnter={event => showTooltip(event, 'Logout')} onMouseLeave={hideTooltip} onFocus={event => showTooltip(event, 'Logout')} onBlur={hideTooltip}><LogOut size={18}/></button>
       </div>
     </aside>
     <SidebarTooltip tooltip={tooltip} />

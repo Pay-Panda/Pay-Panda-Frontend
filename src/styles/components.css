@@ -58,7 +58,7 @@ td small { font-size: var(--font-micro); color: var(--muted-2); margin-top: 4px;
 .status-expired { color: var(--muted); }
 
 .quick-panel ol, .guide-panel ol { list-style: none; padding: 8px 22px 19px; margin: 0; }
-.quick-panel li, .guide-panel li { display: flex; gap: 12px; padding: 13px 0; border-bottom: 1px solid var(--line); }
+.quick-panel li, .guide-panel li { display: flex; align-items: center; gap: 12px; padding: 13px 0; border-bottom: 1px solid var(--line); }
 .quick-panel li:last-child, .guide-panel li:last-child { border: 0; }
 .quick-panel li > span, .guide-panel li > span { width: 27px; height: 27px; border: 1px solid var(--line-strong); border-radius: 50%; display: grid; place-items: center; font-size: var(--font-micro); color: var(--muted); flex: none; }
 .quick-panel li.done > span { background: var(--green); color: #07110e; border-color: var(--green); }
