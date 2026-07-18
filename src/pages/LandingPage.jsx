@@ -68,7 +68,7 @@ export default function LandingPage() {
       </div>
     </header>
 
-    <HeroGeometric className="landing-hero" color1="#080b12" color2="#1e1b4b" bgColor="#080b12">
+    <HeroGeometric className="landing-hero" color1="#0044ff" color2="#ffffff" bgColor="#ffffff">
       <div className="hero-copy">
         <p className="eyebrow accent">UPI infrastructure for modern teams</p>
         <h1>Payments that confirm themselves.</h1>
