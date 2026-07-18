@@ -10,6 +10,12 @@
   width: 100% !important;
   height: 100% !important;
 }
+@supports (width: 100cqw) {
+  .hero-background-canvas canvas {
+    width: 100cqw !important;
+    height: 100cqh !important;
+  }
+}
 
 .landing-content {
   position: relative;
