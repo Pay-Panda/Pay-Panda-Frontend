@@ -14,18 +14,18 @@ import payLogo from '../assets/logo.png';
 
 const sections = [
   { label: 'Overview', items: [{ to: '/dashboard', icon: LayoutDashboard, label: 'Dashboard' }] },
-  { label: 'Gateway setup', items: [
-    { to: '/connect', icon: QrCode, label: 'Connect UPI QR' },
-    { to: '/payment-options', icon: SlidersHorizontal, label: 'Payment options' },
-    { to: '/themes', icon: Palette, label: 'Payment page theme' },
-    { to: '/subscription', icon: BadgeIndianRupee, label: 'Subscription' },
-  ]},
   { label: 'Payments', items: [
     { to: '/business-units', icon: Building2, label: 'Sub-businesses' },
     { to: '/payments/create', icon: PlusCircle, label: 'Create payment' },
     { to: '/default-link', icon: Link2, label: 'Default link' },
     { to: '/payments/history', icon: History, label: 'Payment history' },
     { to: '/subscription-history', icon: ReceiptIndianRupee, label: 'Subscription history' },
+  ]},
+  { label: 'Gateway setup', items: [
+    { to: '/connect', icon: QrCode, label: 'Connect UPI QR' },
+    { to: '/payment-options', icon: SlidersHorizontal, label: 'Payment options' },
+    { to: '/themes', icon: Palette, label: 'Payment page theme' },
+    { to: '/subscription', icon: BadgeIndianRupee, label: 'Subscription' },
   ]},
   { label: 'API setup', items: [
     { to: '/api-keys', icon: KeyRound, label: 'App credentials' },
