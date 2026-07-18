@@ -28,7 +28,13 @@
 .auth-switch { text-align: center; font-size: var(--font-small); color: var(--muted); margin-top: 18px; }
 .auth-switch a { color: var(--accent-contrast); }
 
-.google-auth-wrap { margin-top: 22px; }
+.google-auth-wrap { position: relative; margin-top: 22px; min-height: 40px; }
+.google-auth-skeleton {
+  position: absolute; inset: 0; height: 40px; border-radius: var(--radius-full);
+  background: linear-gradient(90deg, var(--panel-inset) 25%, var(--panel-2) 50%, var(--panel-inset) 75%);
+  background-size: 200% 100%; animation: google-auth-shimmer 1.4s ease-in-out infinite;
+}
+@keyframes google-auth-shimmer { 0% { background-position: 200% 0; } 100% { background-position: -200% 0; } }
 .auth-divider { display: flex; align-items: center; gap: 12px; margin: 18px 0; color: var(--muted); font-size: var(--font-micro); text-transform: uppercase; letter-spacing: var(--tracking-wide); }
 .auth-divider:before, .auth-divider:after { content: ""; flex: 1; height: 1px; background: var(--line); }
 

@@ -47,6 +47,14 @@ export default function AuthPage({ mode }) {
   const verifyOtp=async(event,codeOverride)=>{event?.preventDefault();const code=codeOverride??otp;if(busy||code.length!==6)return;setBusy(true);setError('');try{const {data}=await api.post('/auth/verify-login-otp',{challenge:otpState.challenge,otp:code});authenticate(data.token,data.user);navigate('/dashboard')}catch(err){const message=err.response?.data?.message||'Could not verify login code';setError(message);toast(message,'error');setOtp('')}finally{setBusy(false)}};
   const resendOtp=async()=>{if(resendCooldown>0)return;setBusy(true);setError('');try{const {data}=await api.post('/auth/login',{email:form.email,password:form.password});setOtpState(data);setOtp('')}catch(err){const message=err.response?.data?.message||'Could not resend code';setError(message);toast(message,'error')}finally{setBusy(false)}};
   const googleSignIn=async credentialResponse=>{setBusy(true);setError('');try{const {data}=await api.post('/auth/google',{credential:credentialResponse.credential});authenticate(data.token,data.user);navigate('/dashboard')}catch(err){const message=err.response?.data?.message||'Could not sign in with Google.';setError(message);toast(message,'error')}finally{setBusy(false)}};
+  const googleWrapRef=useRef(null);const [googleBtnWidth,setGoogleBtnWidth]=useState(320);
+  useEffect(()=>{
+    const el=googleWrapRef.current;if(!el)return;
+    const update=()=>setGoogleBtnWidth(Math.max(200,Math.round(el.getBoundingClientRect().width)));
+    update();
+    const observer=new ResizeObserver(update);observer.observe(el);
+    return ()=>observer.disconnect();
+  },[]);
   useEffect(()=>{
     if(!otpState)return;
     setResendCooldown(OTP_RESEND_SECONDS);
@@ -91,7 +99,7 @@ export default function AuthPage({ mode }) {
       <p className="eyebrow accent">{signup ? 'Create workspace' : 'Welcome back'}</p>
       <h2>{signup ? 'Start with Pay-Panda' : 'Sign in to your dashboard'}</h2>
       <p>{signup ? 'Set up your business in under two minutes.' : 'Manage your gateway and payments.'}</p>
-      <div className="google-auth-wrap"><GoogleLogin onSuccess={googleSignIn} onError={()=>{setError('Could not sign in with Google.');toast('Could not sign in with Google.','error')}} text={signup?'signup_with':'signin_with'} shape="pill" width="100%"/></div>
+      <div className="google-auth-wrap" ref={googleWrapRef}><div className="google-auth-skeleton" aria-hidden="true"/><GoogleLogin onSuccess={googleSignIn} onError={()=>{setError('Could not sign in with Google.');toast('Could not sign in with Google.','error')}} text={signup?'signup_with':'signin_with'} shape="pill" width={googleBtnWidth}/></div>
       <div className="auth-divider"><span>or</span></div>
       {signup && <div className="form-grid"><label>Full name<input required value={form.name} onChange={e => setForm({...form,name:e.target.value})}/></label><label>Business name<input required value={form.businessName} onChange={e => setForm({...form,businessName:e.target.value})}/></label></div>}
       <label>Email address<input type="email" required value={form.email} onChange={e => setForm({...form,email:e.target.value})}/></label>

@@ -20,6 +20,10 @@
 .password-settings form > .alert { grid-column: 1/-1; margin: 0; }
 .password-settings .password-strength small { max-width: 220px; }
 
+.danger-zone { border-color: color-mix(in srgb, var(--red) 25%, var(--line)); }
+.settings-icon.danger { background: var(--red-soft); color: var(--red); }
+.modal-card .danger-confirm { background: var(--red); }
+
 @media (max-width: 900px) {
   .password-settings form { grid-template-columns: 1fr 1fr; }
   .password-settings form > .primary-button { margin-top: 0; }
