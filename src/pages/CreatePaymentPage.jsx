@@ -21,6 +21,13 @@ export default function CreatePaymentPage(){
     mm.add(REDUCED_MOTION_QUERY, () => { gsap.from(resultRef.current, { autoAlpha: 0, y: 16, scale: .97, duration: .4, ease: EASE_POP }); });
     return () => mm.revert();
   }, { scope: resultRef, dependencies: [result?.id], revertOnUpdate: true });
+  useEffect(() => {
+    if (result && window.innerWidth <= 800) {
+      setTimeout(() => {
+        resultRef.current?.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+      }, 100);
+    }
+  }, [result]);
   const submit=async event=>{event.preventDefault();const selected=units.find(unit=>unit.id===form.business_unit_id);const approved=await confirm({title:'Create payment link?',message:`Create a ₹${Number(form.amount).toFixed(2)} payment${selected?` for ${selected.name}`:''} for ${form.customer_name||'this customer'}? The link will expire after ${form.expires_in_minutes} minutes.`,confirmLabel:'Create payment',tone:'warning'});if(!approved)return;setBusy(true);setError('');setResult(null);try{const payload={...form,amount:Number(form.amount),expires_in_minutes:Number(form.expires_in_minutes)};if(!payload.redirect_url)delete payload.redirect_url;if(!payload.business_unit_id)delete payload.business_unit_id;const {data}=await api.post('/dashboard/payments',payload);setResult(data.payment);toast('Payment link and QR created');setForm(current=>({...current,order_id:`ORDER-${Date.now()}`}))}catch(err){setError(err.response?.data?.message||'Could not create payment');toast(err.response?.data?.message||'Could not create payment','error')}finally{setBusy(false)}};
   return <><PageHeader eyebrow="Payments" title="Create a payment" description="Generate a hosted Pay-Panda checkout and amount-specific UPI QR."/><div className="create-grid">
     <form className="panel form-panel" onSubmit={submit}>

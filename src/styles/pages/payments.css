@@ -107,37 +107,39 @@
   .default-link-range { grid-template-columns: 1fr; }
 }
 
-.create-grid {
-  align-items: start;
-}
-.create-grid .form-panel {
-  padding-bottom: 15px;
-}
-.create-grid .form-panel label {
-  margin-top: 10px !important;
-}
-.create-grid .form-panel input,
-.create-grid .form-panel select,
-.create-grid .select-wrap select {
-  height: 36px !important;
-  margin-top: 4px !important;
-  border-radius: var(--radius-sm) !important;
-  font-size: 12px !important;
-  padding: 0 10px !important;
-}
-.create-grid .select-wrap select {
-  padding-left: 32px !important;
-}
-.create-grid .select-wrap svg {
-  top: 14px !important;
-  left: 10px !important;
-  width: 13px !important;
-}
-.create-grid .field-help {
-  margin-top: 3px !important;
-}
-.create-grid .form-panel .primary-button {
-  margin-top: 15px !important;
-  min-height: 38px !important;
-  width: calc(100% - 44px) !important;
+@media (min-width: 800px) {
+  .create-grid {
+    align-items: start;
+  }
+  .create-grid .form-panel {
+    padding-bottom: 15px;
+  }
+  .create-grid .form-panel label {
+    margin-top: 10px !important;
+  }
+  .create-grid .form-panel input,
+  .create-grid .form-panel select,
+  .create-grid .select-wrap select {
+    height: 36px !important;
+    margin-top: 4px !important;
+    border-radius: var(--radius-sm) !important;
+    font-size: 12px !important;
+    padding: 0 10px !important;
+  }
+  .create-grid .select-wrap select {
+    padding-left: 32px !important;
+  }
+  .create-grid .select-wrap svg {
+    top: 14px !important;
+    left: 10px !important;
+    width: 13px !important;
+  }
+  .create-grid .field-help {
+    margin-top: 3px !important;
+  }
+  .create-grid .form-panel .primary-button {
+    margin-top: 15px !important;
+    min-height: 38px !important;
+    width: calc(100% - 44px) !important;
+  }
 }
