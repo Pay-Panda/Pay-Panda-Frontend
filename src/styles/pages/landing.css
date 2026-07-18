@@ -1,4 +1,4 @@
-.landing { min-height: 100vh; overflow-x: clip; position: relative; }
+.landing { min-height: 100vh; overflow-x: clip; position: relative; background: #ffffff; }
 
 .hero-background-canvas {
   position: fixed;
@@ -35,7 +35,7 @@
 .landing-hero {
   display: grid; grid-template-columns: 1.05fr .95fr; align-items: center; gap: 40px;
   padding: 9vh 6vw 8vh; overflow: hidden;
-  background: #ffffff;
+  background: transparent;
   color: #131313;
 }
 .landing-hero h1 {
