@@ -4,6 +4,7 @@ import { ArrowLeft,Check,Clock3,ExternalLink,ShieldCheck,Smartphone } from 'luci
 import { gsap } from 'gsap';
 import { useGSAP } from '@gsap/react';
 import api, { assetUrl } from '../lib/api';
+import { useUi } from '../state/ui-store';
 gsap.registerPlugin(useGSAP);
 
 const colors=['#7c3aed','#22c55e','#38bdf8','#f59e0b','#ec4899','#1e293b'];
@@ -28,8 +29,9 @@ export default function CheckoutPage(){
 
 function QrBlock({publicId}){return <div className="qr-shell"><img src={assetUrl(`/api/public/payments/${publicId}/qr`)} alt="Payment QR"/></div>;}
 function UpiButton({payment,publicId}){
+  const {toast}=useUi();
   const [busy,setBusy]=useState(false);const [message,setMessage]=useState('');
-  const shareQr=async()=>{setBusy(true);setMessage('');const qrUrl=assetUrl(`/api/public/payments/${publicId}/qr`);try{const response=await fetch(qrUrl,{cache:'no-store'});if(!response.ok)throw new Error('Could not load QR');const blob=await response.blob();const file=new File([blob],`pay-panda-${payment.orderId||publicId}.png`,{type:'image/png'});if(navigator.canShare?.({files:[file]})&&navigator.share){await navigator.share({title:`Pay ₹${Number(payment.amount).toFixed(2)}`,text:`Scan this Pay-Panda QR for ${payment.orderId}`,files:[file]});setMessage('QR shared. Select a UPI app that can scan/import QR.');}else{const url=URL.createObjectURL(blob);const link=document.createElement('a');link.href=url;link.download=file.name;link.target='_blank';link.rel='noreferrer';link.click();setTimeout(()=>URL.revokeObjectURL(url),30000);setMessage('QR downloaded. Open it from your UPI app scanner.');}}catch(error){window.open(qrUrl,'_blank','noopener,noreferrer');setMessage('QR opened. Use your UPI app scanner to scan/import it.');}finally{setBusy(false)}};
+  const shareQr=async()=>{setBusy(true);setMessage('');const qrUrl=assetUrl(`/api/public/payments/${publicId}/qr`);try{const response=await fetch(qrUrl,{cache:'no-store'});if(!response.ok)throw new Error('Could not load QR');const blob=await response.blob();const file=new File([blob],`pay-panda-${payment.orderId||publicId}.png`,{type:'image/png'});if(navigator.canShare?.({files:[file]})&&navigator.share){await navigator.share({title:`Pay ₹${Number(payment.amount).toFixed(2)}`,text:`Scan this Pay-Panda QR for ${payment.orderId}`,files:[file]});setMessage('QR shared. Select a UPI app that can scan/import QR.');toast('Payment QR shared','success');}else{const url=URL.createObjectURL(blob);const link=document.createElement('a');link.href=url;link.download=file.name;link.target='_blank';link.rel='noreferrer';link.click();setTimeout(()=>URL.revokeObjectURL(url),30000);setMessage('QR downloaded. Open it from your UPI app scanner.');toast('Payment QR downloaded','info');}}catch{window.open(qrUrl,'_blank','noopener,noreferrer');setMessage('QR opened. Use your UPI app scanner to scan/import it.');toast('QR opened in a new tab','info');}finally{setBusy(false)}};
   return <div className="upi-share-wrap"><button className="upi-pay-button" type="button" disabled={busy} onClick={shareQr}><Smartphone/>{busy?'Preparing QR…':'Pay with a UPI app'}</button>{message&&<small>{message}</small>}</div>;
 }
 function PayElements({payment,publicId}){

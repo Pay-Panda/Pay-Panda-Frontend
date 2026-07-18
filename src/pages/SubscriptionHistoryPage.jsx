@@ -24,9 +24,10 @@ export default function SubscriptionHistoryPage() {
   const pay = async invoice => {
     setPayingId(invoice.id);
     try {
-      if (invoice.checkoutUrl) { window.open(invoice.checkoutUrl, '_blank'); return; }
+      if (invoice.checkoutUrl) { window.open(invoice.checkoutUrl, '_blank'); toast('Invoice checkout opened', 'info'); return; }
       const { data } = await api.post(`/dashboard/subscription/invoices/${invoice.id}/pay`);
       window.open(data.checkoutUrl, '_blank');
+      toast('Invoice checkout opened', 'info');
       load();
     } catch (err) { toast(err.response?.data?.message || 'Could not start invoice payment', 'error'); }
     finally { setPayingId(''); }

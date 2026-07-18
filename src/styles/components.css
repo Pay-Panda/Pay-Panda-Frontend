@@ -200,11 +200,14 @@ td small { font-size: var(--font-micro); color: var(--muted-2); margin-top: 4px;
 .dialog-confirm { border: 0; background: var(--accent-contrast); color: #fff; }
 .global-dialog.danger .dialog-confirm { background: var(--red); }
 
-.toast-stack { position: fixed; right: 20px; top: 20px; z-index: 400; display: grid; gap: 8px; width: min(360px, calc(100vw - 40px)); }
-.app-toast { display: grid; grid-template-columns: auto 1fr auto; align-items: center; gap: 9px; padding: 13px; background: var(--panel); border: 1px solid var(--line-strong); border-radius: var(--radius-md); box-shadow: var(--shadow-md); font-size: var(--font-small); animation: toast-in .22s ease; }
+.toast-stack { position: fixed; right: 20px; top: 20px; z-index: 400; display: grid; gap: 10px; width: min(390px, calc(100vw - 40px)); pointer-events: none; }
+.app-toast { display: grid; grid-template-columns: auto 1fr auto; align-items: center; gap: 10px; padding: 14px 15px; background: color-mix(in srgb, var(--panel) 94%, #fff 6%); border: 1px solid var(--line-strong); border-left: 4px solid var(--accent); border-radius: var(--radius-md); box-shadow: var(--shadow-lg); font-size: var(--font-small); font-weight: 800; animation: toast-in .22s ease; pointer-events: auto; }
 .app-toast > svg { width: 17px; }
+.app-toast.success { border-left-color: var(--green); }
+.app-toast.error { border-left-color: var(--red); }
+.app-toast.info { border-left-color: #60a5fa; }
 .app-toast.success > svg { color: var(--green); }
 .app-toast.error > svg { color: var(--red); }
 .app-toast.info > svg { color: #60a5fa; }
-.app-toast button { border: 0; background: transparent; color: var(--muted); }
+.app-toast button { border: 0; background: transparent; color: var(--muted); cursor: pointer; }
 .app-toast button svg { width: 13px; }

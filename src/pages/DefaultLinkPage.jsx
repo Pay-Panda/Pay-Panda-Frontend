@@ -3,6 +3,7 @@ import { CheckCircle2, Copy, ExternalLink, IndianRupee, Link2, QrCode, RefreshCw
 import api, { assetUrl } from '../lib/api';
 import PageHeader from '../components/PageHeader';
 import { useUi } from '../state/ui-store';
+import { copyToClipboard } from '../lib/clipboard';
 import useStagger from '../hooks/useStagger';
 
 export default function DefaultLinkPage() {
@@ -50,7 +51,7 @@ export default function DefaultLinkPage() {
     finally { setBusy(false); }
   };
 
-  const copy = async () => { await navigator.clipboard.writeText(link.url); toast('Link copied'); };
+  const copy = async () => { try { await copyToClipboard(link.url); toast('Default payment link copied', 'success'); } catch { toast('Could not copy link', 'error'); } };
 
   if (loading) return <div className="empty-cell"><RefreshCw className="spin"/> Loading…</div>;
 

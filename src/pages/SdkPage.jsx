@@ -2,6 +2,7 @@ import { useRef, useState } from 'react';
 import { Copy, Server } from 'lucide-react';
 import PageHeader from '../components/PageHeader';
 import { useUi } from '../state/ui-store';
+import { copyToClipboard } from '../lib/clipboard';
 import useStagger from '../hooks/useStagger';
 
 const API_BASE = 'https://metatronhost.in/pay-panda/api';
@@ -172,7 +173,7 @@ export default function SdkPage() {
   const { toast } = useUi();
   const [active, setActive] = useState('node');
   useStagger(rootRef, '.sdk-card');
-  const copy = async () => { await navigator.clipboard.writeText(samples[active]); toast('Integration sample copied'); };
+  const copy = async () => { try { await copyToClipboard(samples[active]); toast('Integration sample copied', 'success'); } catch { toast('Could not copy sample', 'error'); } };
   return <div ref={rootRef}>
     <PageHeader eyebrow="API setup" title="SDK and integration samples" description="Copy-paste backend examples for creating Pay-Panda checkouts and verifying payment redirects." action={<button className="primary-button compact" onClick={copy}><Copy/>Copy sample</button>} />
     <section className="sdk-grid">

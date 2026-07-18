@@ -28,6 +28,10 @@
 .auth-switch { text-align: center; font-size: var(--font-small); color: var(--muted); margin-top: 18px; }
 .auth-switch a { color: var(--accent-contrast); }
 
+.google-auth-wrap { margin-top: 22px; }
+.auth-divider { display: flex; align-items: center; gap: 12px; margin: 18px 0; color: var(--muted); font-size: var(--font-micro); text-transform: uppercase; letter-spacing: var(--tracking-wide); }
+.auth-divider:before, .auth-divider:after { content: ""; flex: 1; height: 1px; background: var(--line); }
+
 .phone-input { display: flex !important; height: 43px; margin-top: 7px; border: 1px solid var(--line-strong); background: var(--panel-inset); border-radius: var(--radius-md); overflow: hidden; }
 .phone-input > span { width: 54px; display: grid; place-items: center; border-right: 1px solid var(--line-strong); color: var(--accent-contrast); font-size: var(--font-small); font-weight: 800; }
 .phone-input > select { width: auto; max-width: 140px; border: 0; border-right: 1px solid var(--line-strong); background: transparent; color: var(--accent-contrast); font-size: var(--font-small); font-weight: 800; padding: 0 8px; outline: none; }
