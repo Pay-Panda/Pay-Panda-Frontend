@@ -1,4 +1,4 @@
-.landing { min-height: 100vh; overflow-x: clip; position: relative; background: #ffffff; }
+.landing { min-height: 100vh; overflow-x: clip; position: relative; background: var(--bg); color: var(--text); }
 
 .hero-background-canvas {
   position: fixed;
@@ -84,7 +84,8 @@
 .hero-card-status i { width: 7px; height: 7px; background: var(--amber); border-radius: 50%; box-shadow: 0 0 0 4px var(--amber-soft); }
 .hero-card-status b { margin-left: auto; color: var(--amber); font-variant-numeric: tabular-nums; font-weight: 700; }
 
-.landing-section { padding: 9vh 6vw; max-width: 1280px; margin: 0 auto; }
+.landing-section { padding: 9vh 6vw; background: var(--bg); max-width: none; }
+.landing-section > * { max-width: 1280px; margin-left: auto; margin-right: auto; }
 .landing-section.alt { background: var(--panel-2); max-width: none; }
 .landing-section.alt > * { max-width: 1280px; margin-left: auto; margin-right: auto; }
 .landing-section-head { max-width: 620px; margin-bottom: 44px; }
@@ -114,7 +115,7 @@
 .landing-cta h2 { font-size: clamp(24px, 3vw, 34px); max-width: 640px; letter-spacing: var(--tracking-tight); }
 .landing-cta-note { display: flex; align-items: center; gap: 6px; font-size: var(--font-small); color: var(--muted); }
 
-.landing-footer { display: flex; align-items: center; justify-content: space-between; gap: 18px; padding: 24px 6vw; border-top: 1px solid var(--line); flex-wrap: wrap; }
+.landing-footer { display: flex; align-items: center; justify-content: space-between; gap: 18px; padding: 24px 6vw; border-top: 1px solid var(--line); flex-wrap: wrap; background: var(--bg); }
 .landing-footer .brand { display: flex; align-items: center; gap: 10px; height: auto; padding: 0; border: 0; }
 .landing-footer p { font-size: 11px; color: var(--muted); }
 

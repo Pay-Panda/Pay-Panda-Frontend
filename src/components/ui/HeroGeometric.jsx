@@ -116,9 +116,9 @@ function GradientPlane({ color1, color2, bgColor = "#ffffff", speed = 1 }) {
     }),
     [color1, color2, bgColor]
   );
-  useFrame((state) => {
-    const { clock, size } = state;
-    uniforms.uTime.value = clock.getElapsedTime() * speed;
+  useFrame((state, delta) => {
+    const { size } = state;
+    uniforms.uTime.value += delta * speed;
     uniforms.uResolution.value.set(size.width, size.height);
     uniforms.uColor1.value.set(color1);
     uniforms.uColor2.value.set(color2);
