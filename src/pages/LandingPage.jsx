@@ -9,6 +9,7 @@ import { useAuth } from '../state/auth-store';
 import useSmoothScroll from '../hooks/useSmoothScroll';
 import { gsap, REDUCED_MOTION_QUERY, EASE_ENTRANCE } from '../lib/motion';
 import payLogo from '../assets/logo.png';
+import HeroGeometric from '../components/ui/HeroGeometric';
 
 const features = [
   { icon: KeyRound, title: 'OAuth-secured payment API', text: 'Server-to-server integration with client-credential app_id / app_secret pairs and short-lived bearer tokens — no long-lived keys sitting in your code.' },
@@ -67,7 +68,7 @@ export default function LandingPage() {
       </div>
     </header>
 
-    <section className="landing-hero">
+    <HeroGeometric className="landing-hero" color1="#3B82F6" color2="#F0F9FF">
       <div className="hero-copy">
         <p className="eyebrow accent">UPI infrastructure for modern teams</p>
         <h1>Payments that confirm themselves.</h1>
@@ -90,7 +91,7 @@ export default function LandingPage() {
         </div>
         <div className="hero-orb one" /><div className="hero-orb two" />
       </div>
-    </section>
+    </HeroGeometric>
 
     <section className="landing-section" id="features">
       <div className="landing-section-head">

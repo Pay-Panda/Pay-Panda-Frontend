@@ -34,7 +34,7 @@
 
 .landing-hero {
   display: grid; grid-template-columns: 1.05fr .95fr; align-items: center; gap: 40px;
-  padding: 9vh 6vw 8vh; position: relative; overflow: hidden;
+  padding: 9vh 6vw 8vh; overflow: hidden;
   background: radial-gradient(circle at 15% 20%, var(--accent-soft-strong), transparent 40%), var(--bg);
 }
 .hero-copy h1 { font-size: clamp(38px, 4.4vw, 60px); line-height: 1.03; letter-spacing: var(--tracking-tight); margin: 14px 0 18px; }
