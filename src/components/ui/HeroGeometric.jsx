@@ -69,8 +69,8 @@ float bayerDither4x4(vec2 uv) {
 void main() {
     vec2 uv = vUv;
     vec2 coord = gl_FragCoord.xy;
-    float noise = snoise(uv * 1.5 + vec2(uTime * 0.05, uTime * 0.03)) * 0.25;
-    float diagonal = (uv.x + uv.y) * 0.5;
+    float noise = snoise(uv * 1.5 + vec2(uTime * 0.15, uTime * 0.1)) * 0.25;
+    float diagonal = ((1.0 - uv.x) + uv.y) * 0.5;
     float gradient = diagonal * 1.2 + noise;
     vec3 deepBlue = uColor1;
     vec3 paleBlue = uColor2;
@@ -155,6 +155,7 @@ export default function HeroGeometric({
           dpr={[1, 1]}
           gl={{ antialias: false, alpha: true }}
           style={{ width: '100%', height: '100%' }}
+          frameloop="always"
         >
           <GradientPlane color1={color1} color2={color2} bgColor={bgColor} speed={speed} />
         </Canvas>

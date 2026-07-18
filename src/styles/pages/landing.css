@@ -24,7 +24,11 @@
 
 .landing-nav.landing-content {
   position: sticky; top: 0; z-index: 20; display: flex; align-items: center; justify-content: space-between;
-  gap: 24px; padding: 18px 6vw; background: var(--bg-elevated); border-bottom: 1px solid var(--line);
+  gap: 24px; padding: 18px 6vw;
+  background: rgba(255, 255, 255, 0.7);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.06);
 }
 .landing-nav nav { display: flex; gap: 26px; }
 .landing-nav nav a { font-size: var(--font-small); color: var(--muted); }
