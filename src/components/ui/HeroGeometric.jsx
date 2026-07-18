@@ -2,6 +2,7 @@
 import { useRef, useMemo } from "react";
 import { Canvas, useFrame } from "@react-three/fiber";
 import * as THREE from "three";
+import { motion } from "framer-motion";
 import { cn } from "../../lib/utils";
 
 const vertexShader = `
@@ -126,6 +127,9 @@ function GradientPlane({ color1, color2, speed = 1 }) {
 }
 
 export default function HeroGeometric({
+  title1,
+  title2,
+  description,
   color1 = "#3B82F6",
   color2 = "#F0F9FF",
   speed = 1,
@@ -133,7 +137,7 @@ export default function HeroGeometric({
   children,
 }) {
   return (
-    <div className={cn("relative overflow-hidden", className)}>
+    <div className={cn("relative w-full min-h-screen flex flex-col items-center overflow-hidden bg-white text-black", className)}>
       <div className="absolute inset-0 z-0 pointer-events-none">
         <Canvas
           camera={{ position: [0, 0, 1] }}
@@ -144,9 +148,53 @@ export default function HeroGeometric({
           <GradientPlane color1={color1} color2={color2} speed={speed} />
         </Canvas>
       </div>
-      <div className="relative z-10">
-        {children}
-      </div>
+      {(title1 || title2 || description) && !children && (
+        <div className="relative z-10 w-full flex-1 flex flex-col items-center justify-center pt-8 pb-8 md:pt-20 md:pb-20">
+          <div className="w-full max-w-[1200px] px-6 flex flex-col items-center">
+            {title1 && (
+              <div className="overflow-hidden">
+                <motion.h1
+                  initial={{ y: "100%", opacity: 0 }}
+                  animate={{ y: "0%", opacity: 1 }}
+                  transition={{ duration: 1, ease: [0.16, 1, 0.3, 1], delay: 0.2 }}
+                  className="text-[12cqi] md:text-[8cqi] lg:text-[6cqi] leading-[0.9] tracking-tighter text-[#131313]"
+                >
+                  <span className="font-serif italic font-light text-[#1a1a1a]">{title1}</span>
+                </motion.h1>
+              </div>
+            )}
+            {title2 && (
+              <div className="overflow-hidden">
+                <motion.h1
+                  initial={{ y: "100%", opacity: 0 }}
+                  animate={{ y: "0%", opacity: 1 }}
+                  transition={{ duration: 1, ease: [0.16, 1, 0.3, 1], delay: 0.35 }}
+                  className="text-[12cqi] md:text-[8cqi] lg:text-[6cqi] leading-[0.9] tracking-tighter font-bold text-black"
+                >
+                  {title2}
+                </motion.h1>
+              </div>
+            )}
+            {description && (
+              <div className="max-w-[480px] text-center mb-8">
+                <motion.p
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.8, delay: 0.6, ease: "easeOut" }}
+                  className="text-lg md:text-[1.35rem] leading-relaxed text-neutral-600 font-normal"
+                >
+                  {description}
+                </motion.p>
+              </div>
+            )}
+          </div>
+        </div>
+      )}
+      {children && (
+        <div className="relative z-10 w-full flex-1">
+          {children}
+        </div>
+      )}
     </div>
   );
 }
