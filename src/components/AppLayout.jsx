@@ -87,7 +87,7 @@ export default function AppLayout() {
     <SidebarTooltip tooltip={tooltip} />
     <main className="main">
       <header className="topbar">
-        <div><button className="menu-button" onClick={() => setOpen(true)}><Menu /></button><p className="eyebrow">Workspace</p><h1>{title}</h1></div>
+        <div><button className="menu-button" onClick={() => setOpen(true)}><Menu /></button><p className="eyebrow">Workspace</p><h1>{user?.business?.name || 'Console'}</h1></div>
         <div className="top-actions"><button className="icon-button" title={`Switch to ${theme === 'dark' ? 'light' : 'dark'} mode`} onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}>{theme === 'dark' ? <Sun size={18}/> : <Moon size={18}/>}</button><div className="user-chip"><span>{user?.name?.[0] || 'P'}</span><div><strong>{user?.name}</strong><small>{user?.business?.name}</small></div></div></div>
       </header>
       <div className="page" ref={pageRef}><Outlet /></div>
