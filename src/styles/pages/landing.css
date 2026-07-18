@@ -1,6 +1,22 @@
-.landing { min-height: 100vh; overflow-x: clip; }
+.landing { min-height: 100vh; overflow-x: clip; position: relative; }
 
-.landing-nav {
+.hero-background-canvas {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+}
+.hero-background-canvas canvas {
+  width: 100% !important;
+  height: 100% !important;
+}
+
+.landing-content {
+  position: relative;
+  z-index: 1;
+}
+
+.landing-nav.landing-content {
   position: sticky; top: 0; z-index: 20; display: flex; align-items: center; justify-content: space-between;
   gap: 24px; padding: 18px 6vw; background: var(--bg-elevated); border-bottom: 1px solid var(--line);
 }
