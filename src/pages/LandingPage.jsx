@@ -9,6 +9,7 @@ import { useAuth } from '../state/auth-store';
 import useSmoothScroll from '../hooks/useSmoothScroll';
 import { gsap, REDUCED_MOTION_QUERY, EASE_ENTRANCE } from '../lib/motion';
 import payLogo from '../assets/logo.png';
+import HeroGeometric from '../components/ui/HeroGeometric';
 
 const features = [
   { icon: KeyRound, title: 'OAuth-secured payment API', text: 'Server-to-server integration with client-credential app_id / app_secret pairs and short-lived bearer tokens — no long-lived keys sitting in your code.' },
@@ -52,8 +53,9 @@ export default function LandingPage() {
     return () => mm.revert();
   }, { scope: rootRef, dependencies: [] });
 
-  return <div className="landing" ref={rootRef}>
-    <header className="landing-nav">
+  return <div className="landing" data-theme="light" ref={rootRef}>
+    <HeroGeometric className="hero-background-canvas" color1="#0044ff" color2="#ffffff" bgColor="#ffffff" speed={1.5} />
+    <header className="landing-nav landing-content">
       <Link className="brand" to="/"><img className="brand-mark" src={payLogo} alt="Pay-Panda" /><strong>Pay-Panda</strong></Link>
       <nav>
         <a href="#features">Features</a>
@@ -67,7 +69,7 @@ export default function LandingPage() {
       </div>
     </header>
 
-    <section className="landing-hero">
+    <section className="landing-hero landing-content">
       <div className="hero-copy">
         <p className="eyebrow accent">UPI infrastructure for modern teams</p>
         <h1>Payments that confirm themselves.</h1>
@@ -92,7 +94,7 @@ export default function LandingPage() {
       </div>
     </section>
 
-    <section className="landing-section" id="features">
+    <section className="landing-section landing-content" id="features">
       <div className="landing-section-head">
         <p className="eyebrow accent">Everything included</p>
         <h2>Built for teams who accept UPI directly</h2>
@@ -107,7 +109,7 @@ export default function LandingPage() {
       </div>
     </section>
 
-    <section className="landing-section alt" id="how-it-works">
+    <section className="landing-section alt landing-content" id="how-it-works">
       <div className="landing-section-head">
         <p className="eyebrow accent">Four steps</p>
         <h2>From connection to confirmed payment</h2>
@@ -123,7 +125,7 @@ export default function LandingPage() {
       </ol>
     </section>
 
-    <section className="landing-section" id="security">
+    <section className="landing-section landing-content" id="security">
       <div className="landing-section-head">
         <p className="eyebrow accent">Security first</p>
         <h2>Your account, your payments, protected</h2>
@@ -133,14 +135,14 @@ export default function LandingPage() {
       </div>
     </section>
 
-    <section className="landing-cta reveal-group">
+    <section className="landing-cta landing-content reveal-group">
       <Wallet size={30} />
       <h2>Connect your BharatPe account and take your first payment today.</h2>
       <Link className="primary-button" to="/signup">Create your workspace<ArrowRight size={18} /></Link>
       <span className="landing-cta-note"><Timer size={13} />Set up in under two minutes</span>
     </section>
 
-    <footer className="landing-footer">
+    <footer className="landing-footer landing-content">
       <div className="brand"><img className="brand-mark" src={payLogo} alt="Pay-Panda" /><strong>Pay-Panda</strong></div>
       <p>© {new Date().getFullYear()} Pay-Panda. UPI payment verification, not a payment aggregator.</p>
     </footer>
