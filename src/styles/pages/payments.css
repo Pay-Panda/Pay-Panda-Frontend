@@ -130,9 +130,10 @@
     padding-left: 32px !important;
   }
   .create-grid .select-wrap svg {
-    top: 14px !important;
+    top: 12px !important;
     left: 10px !important;
-    width: 13px !important;
+    width: 14px !important;
+    height: 14px !important;
   }
   .create-grid .field-help {
     margin-top: 3px !important;
@@ -141,5 +142,101 @@
     margin-top: 15px !important;
     min-height: 38px !important;
     width: calc(100% - 44px) !important;
+  }
+}
+
+/* Prefix inputs (Amount, Mobile) styling */
+.input-prefix-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+  width: 100%;
+}
+.input-prefix-wrapper .input-prefix {
+  position: absolute;
+  left: 12px;
+  font-size: 13px;
+  color: var(--muted);
+  pointer-events: none;
+  font-weight: 600;
+  z-index: 2;
+}
+.input-prefix-wrapper input {
+  padding-left: 28px !important;
+}
+.input-prefix-wrapper.phone-prefix input {
+  padding-left: 42px !important;
+}
+
+/* Custom premium select styling for Create Payment */
+.create-grid select {
+  appearance: none;
+  -webkit-appearance: none;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%2388888b' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><polyline points='6 9 12 15 18 9'></polyline></svg>") !important;
+  background-repeat: no-repeat !important;
+  background-position: right 12px center !important;
+  background-size: 14px !important;
+  padding-right: 32px !important;
+}
+
+/* Payment reason select pills styling */
+.reason-input-container {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 7px;
+}
+.reason-input-container input {
+  flex: 1;
+  min-width: 120px;
+  margin-top: 0 !important;
+}
+.reason-pills {
+  display: flex;
+  gap: 4px;
+}
+.reason-pill {
+  height: 43px;
+  padding: 0 12px;
+  font-size: 11px;
+  font-weight: 550;
+  color: var(--text-secondary);
+  background: var(--panel-inset);
+  border: 1px solid var(--line-strong);
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+}
+.reason-pill:hover {
+  border-color: var(--accent);
+  background: color-mix(in srgb, var(--accent) 5%, transparent);
+}
+.reason-pill.active {
+  background: var(--accent-soft);
+  border-color: var(--accent-line);
+  color: var(--accent-contrast);
+}
+
+/* Make sure select wraps align SVG correctly on mobile */
+.select-wrap svg {
+  position: absolute;
+  left: 12px;
+  top: 15px;
+  width: 14px;
+  height: 14px;
+  color: var(--muted);
+  pointer-events: none;
+  z-index: 2;
+}
+
+@media (min-width: 800px) {
+  .reason-input-container {
+    margin-top: 4px;
+  }
+  .reason-pill {
+    height: 36px;
+    border-radius: var(--radius-sm);
   }
 }

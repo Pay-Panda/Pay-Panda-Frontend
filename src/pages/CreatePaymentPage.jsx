@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import { useGSAP } from '@gsap/react';
-import { Copy, ExternalLink, QrCode, RefreshCw, Settings2 } from 'lucide-react';
+import { Building2, Copy, ExternalLink, QrCode, RefreshCw, Settings2 } from 'lucide-react';
 import api, { assetUrl } from '../lib/api';
 import PageHeader from '../components/PageHeader';
 import { useAuth } from '../state/auth-store';
@@ -28,19 +28,27 @@ export default function CreatePaymentPage(){
       }, 100);
     }
   }, [result]);
-  const submit=async event=>{event.preventDefault();const selected=units.find(unit=>unit.id===form.business_unit_id);const approved=await confirm({title:'Create payment link?',message:`Create a ₹${Number(form.amount).toFixed(2)} payment${selected?` for ${selected.name}`:''} for ${form.customer_name||'this customer'}? The link will expire after ${form.expires_in_minutes} minutes.`,confirmLabel:'Create payment',tone:'warning'});if(!approved)return;setBusy(true);setError('');setResult(null);try{const payload={...form,amount:Number(form.amount),expires_in_minutes:Number(form.expires_in_minutes)};if(!payload.redirect_url)delete payload.redirect_url;if(!payload.business_unit_id)delete payload.business_unit_id;const {data}=await api.post('/dashboard/payments',payload);setResult(data.payment);toast('Payment link and QR created');setForm(current=>({...current,order_id:`ORDER-${Date.now()}`}))}catch(err){setError(err.response?.data?.message||'Could not create payment');toast(err.response?.data?.message||'Could not create payment','error')}finally{setBusy(false)}};
+  const submit=async event=>{event.preventDefault();const selected=units.find(unit=>unit.id===form.business_unit_id);const approved=await confirm({title:'Create payment link?',message:`Create a ₹${Number(form.amount).toFixed(2)} payment${selected?` for ${selected.name}`:''} for ${form.customer_name||'this customer'}? The link will expire after ${form.expires_in_minutes} minutes.`,confirmLabel:'Create payment',tone:'warning'});if(!approved)return;setBusy(true);setError('');setResult(null);try{const payload={...form,amount:Number(form.amount),expires_in_minutes:Number(form.expires_in_minutes)};if(payload.customer_mobile){payload.customer_mobile=`+91${payload.customer_mobile}`}else{delete payload.customer_mobile}if(!payload.redirect_url)delete payload.redirect_url;if(!payload.business_unit_id)delete payload.business_unit_id;const {data}=await api.post('/dashboard/payments',payload);setResult(data.payment);toast('Payment link and QR created');setForm(current=>({...current,order_id:`ORDER-${Date.now()}`}))}catch(err){setError(err.response?.data?.message||'Could not create payment');toast(err.response?.data?.message||'Could not create payment','error')}finally{setBusy(false)}};
   return <><PageHeader eyebrow="Payments" title="Create a payment" description="Generate a hosted Pay-Panda checkout and amount-specific UPI QR."/><div className="create-grid">
     <form className="panel form-panel" onSubmit={submit}>
       <div className="form-grid">
         <label>Order ID<input required value={form.order_id} onChange={e=>setForm({...form,order_id:e.target.value})}/></label>
-        <label>Amount (₹)<input required type="number" min="1" step="0.01" value={form.amount} onChange={e=>setForm({...form,amount:e.target.value})}/></label>
+        <label>Amount (₹)
+          <div className="input-prefix-wrapper">
+            <span className="input-prefix">₹</span>
+            <input required type="number" min="1" step="0.01" value={form.amount} onChange={e=>setForm({...form,amount:e.target.value})}/>
+          </div>
+        </label>
       </div>
       <div className="form-grid">
         <label>Sub-business / branch
-          <select value={form.business_unit_id} onChange={e=>setForm({...form,business_unit_id:e.target.value})}>
-            <option value="">Main business summary</option>
-            {units.map(unit=><option key={unit.id} value={unit.id}>{unit.name} ({unit.code})</option>)}
-          </select>
+          <div className="select-wrap">
+            <Building2/>
+            <select value={form.business_unit_id} onChange={e=>setForm({...form,business_unit_id:e.target.value})}>
+              <option value="">Main business summary</option>
+              {units.map(unit=><option key={unit.id} value={unit.id}>{unit.name} ({unit.code})</option>)}
+            </select>
+          </div>
           <small className="field-help">Separate dashboard totals & history.</small>
         </label>
         <label>Payment expiry
@@ -58,11 +66,32 @@ export default function CreatePaymentPage(){
         </label>
       </div>
       <div className="form-grid">
-        <label>Customer name<input value={form.customer_name} onChange={e=>setForm({...form,customer_name:e.target.value})}/></label>
-        <label>Customer mobile<input inputMode="numeric" maxLength="15" value={form.customer_mobile} onChange={e=>setForm({...form,customer_mobile:e.target.value.replace(/\D/g,'').slice(0,15)})}/></label>
+        <label>Customer name<input value={form.customer_name} onChange={e=>setForm({...form,customer_name:e.target.value.replace(/(^\w|\s\w)/g,m=>m.toUpperCase())})}/></label>
+        <label>Customer mobile
+          <div className="input-prefix-wrapper phone-prefix">
+            <span className="input-prefix">+91</span>
+            <input inputMode="numeric" maxLength="10" placeholder="10-digit mobile" value={form.customer_mobile} onChange={e=>setForm({...form,customer_mobile:e.target.value.replace(/\D/g,'').slice(0,10)})}/>
+          </div>
+        </label>
       </div>
       <div className="form-grid">
-        <label>Payment reason<input placeholder="Invoice, deposit, order…" value={form.reason} onChange={e=>setForm({...form,reason:e.target.value})}/></label>
+        <label>Payment reason
+          <div className="reason-input-container">
+            <input placeholder="Invoice, deposit, order…" value={form.reason} onChange={e=>setForm({...form,reason:e.target.value})}/>
+            <div className="reason-pills">
+              {['Invoice', 'Deposit', 'Order'].map(sample => (
+                <button
+                  type="button"
+                  key={sample}
+                  className={`reason-pill ${form.reason === sample ? 'active' : ''}`}
+                  onClick={() => setForm({ ...form, reason: sample })}
+                >
+                  {sample}
+                </button>
+              ))}
+            </div>
+          </div>
+        </label>
         <label>Redirect URL<input type="url" placeholder="https://your-site.com/payment-return" value={form.redirect_url} onChange={e=>setForm({...form,redirect_url:e.target.value})}/></label>
       </div>
       <label>Payment description<input placeholder="Add customer-facing comments or payment details" value={form.remark1} onChange={e=>setForm({...form,remark1:e.target.value})}/></label>
