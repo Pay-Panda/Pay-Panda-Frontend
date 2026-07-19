@@ -17,7 +17,19 @@ export default function ApiKeysPage(){
   useEffect(()=>{load();api.get('/dashboard/business-units').then(({data})=>setUnits(data.units.filter(unit=>unit.active))).catch(()=>{})},[]);
   useStagger(rootRef, '.client-list article', { dependency: clients.length });
   useModalEnter(secretRef, '.credential-modal', Boolean(secret));
-  const create=async()=>{setCreating(true);try{const {data}=await api.post('/clients',{name,businessUnitId:businessUnitId||undefined});setSecret(data.client);setBusinessUnitId('');await load()}catch(err){toast(err.response?.data?.message||'Could not create credentials','error')}finally{setCreating(false)}};
+  const create=async()=>{
+    const selectedUnit=units.find(unit=>unit.id===businessUnitId);
+    const ok=await confirm({
+      title:'Create app credentials?',
+      message:selectedUnit
+        ?`Create "${name}" restricted to sub-business "${selectedUnit.name}"? Every payment made with this credential will be attributed to it, and this cannot be changed later — you'd need to revoke it and create a new one.`
+        :`Create "${name}" with no sub-business restriction? It will be able to create and manage payments across the whole business.`,
+      confirmLabel:'Create credentials',tone:'warning',
+    });
+    if(!ok)return;
+    setCreating(true);
+    try{const {data}=await api.post('/clients',{name,businessUnitId:businessUnitId||undefined});setSecret(data.client);setBusinessUnitId('');await load()}catch(err){toast(err.response?.data?.message||'Could not create credentials','error')}finally{setCreating(false)}
+  };
   const rotate=async client=>{if(!await confirm({title:'Rotate App Secret?',message:`The previous secret for ${client.name} will stop working immediately.`,confirmLabel:'Rotate secret',tone:'danger'}))return;setBusyId(client.id);try{const {data}=await api.post(`/clients/${client.id}/rotate`);setSecret({...client,...data.client});toast('App Secret rotated');await load()}catch(err){toast(err.response?.data?.message||'Could not rotate secret','error')}finally{setBusyId('')}};
   const revoke=async client=>{if(!await confirm({title:'Revoke credentials?',message:`${client.name} will immediately lose API access.`,confirmLabel:'Revoke',tone:'danger'}))return;setBusyId(client.id);try{await api.post(`/clients/${client.id}/revoke`);toast('App credentials revoked','info');await load()}catch(err){toast(err.response?.data?.message||'Could not revoke credentials','error')}finally{setBusyId('')}};
   const copy=async(value,type)=>{try{await copyToClipboard(value);setCopied(type);toast(type==='secret'?'App Secret copied securely':'App ID copied','success');setTimeout(()=>setCopied(''),1800)}catch{toast('Could not copy. Please copy manually.','error')}};
