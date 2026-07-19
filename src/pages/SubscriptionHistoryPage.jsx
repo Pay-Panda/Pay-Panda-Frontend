@@ -38,21 +38,21 @@ export default function SubscriptionHistoryPage() {
 
   return <div ref={rootRef}>
     <PageHeader eyebrow="Billing" title="Subscription history" description="Monthly platform fee invoices, generated from your actual payment volume." />
-    <section className="history-summary">
+    <section className="history-summary grid grid-cols-[repeat(auto-fit,minmax(190px,1fr))] gap-4">
       <article><span><IndianRupee /></span><div><small>Total paid</small><strong>₹{totalPaid.toLocaleString('en-IN', { minimumFractionDigits: 2 })}</strong></div></article>
       <article><span><ReceiptIndianRupee /></span><div><small>Invoices</small><strong>{invoices.length}</strong></div></article>
-      <article className="range-card"><span><CalendarDays /></span><div><small>Outstanding</small><strong>{pending ? `₹${Number(pending.totalFeeAmount).toFixed(2)}` : 'None'}</strong></div></article>
+      <article className="range-card flex items-center gap-3 rounded-2xl border border-line bg-panel p-4 shadow-panel"><span><CalendarDays /></span><div><small>Outstanding</small><strong>{pending ? `₹${Number(pending.totalFeeAmount).toFixed(2)}` : 'None'}</strong></div></article>
     </section>
-    <section className="panel">
-      <div className="table-wrap"><table><thead><tr><th>Period</th><th>Payments</th><th>Amount</th><th>Status</th><th></th></tr></thead><tbody>
-        {loading ? <tr><td colSpan="5" className="empty-cell"><RefreshCw className="spin"/> Loading…</td></tr>
+    <section className="panel overflow-hidden rounded-[var(--radius-lg)] border border-line bg-panel shadow-panel">
+      <div className="table-wrap w-full overflow-auto"><table><thead><tr><th>Period</th><th>Payments</th><th>Amount</th><th>Status</th><th></th></tr></thead><tbody>
+        {loading ? <tr><td colSpan="5" className="empty-cell px-5 py-12 text-center text-muted"><RefreshCw className="spin animate-spin"/> Loading…</td></tr>
           : invoices.length ? invoices.map(invoice => <tr key={invoice.id}>
             <td><strong>{new Date(invoice.periodStart).toLocaleDateString('en-IN', { month: 'long', year: 'numeric' })}</strong></td>
             <td>{invoice.paymentCount}</td>
             <td>₹{Number(invoice.totalFeeAmount).toFixed(2)}</td>
             <td><StatusBadge status={invoice.status === 'PAID' ? 'SUCCESS' : invoice.status === 'EXPIRED' ? 'EXPIRED' : 'PENDING'} /></td>
-            <td>{invoice.status === 'PENDING' && <button className="info-button" onClick={() => pay(invoice)} disabled={payingId === invoice.id}>{payingId === invoice.id ? <RefreshCw className="spin" size={14}/> : null}Pay now</button>}</td>
-          </tr>) : <tr><td colSpan="5" className="empty-cell">No invoices yet — they're generated automatically at the start of each month once you've processed payments.</td></tr>}
+            <td>{invoice.status === 'PENDING' && <button className="info-button inline-flex h-10 items-center gap-2 rounded-[var(--radius-md)] border border-line bg-panel px-3 text-small text-text transition hover:border-accent" onClick={() => pay(invoice)} disabled={payingId === invoice.id}>{payingId === invoice.id ? <RefreshCw className="spin animate-spin" size={14}/> : null}Pay now</button>}</td>
+          </tr>) : <tr><td colSpan="5" className="empty-cell px-5 py-12 text-center text-muted">No invoices yet — they're generated automatically at the start of each month once you've processed payments.</td></tr>}
       </tbody></table></div>
     </section>
   </div>;

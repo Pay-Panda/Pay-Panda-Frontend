@@ -4,7 +4,7 @@ const MAX_DIRECT_SLOTS = 4;
  * stable identity order (sorted by id), never by the current amount ranking, so re-sorting or
  * filtering never repaints the bars that stay on screen. Direct labels replace a legend. */
 export default function RankedBars({ items, unit = '₹', emptyMessage = 'No data in this range yet.' }) {
-  if (!items?.length) return <div className="empty-state"><p>{emptyMessage}</p></div>;
+  if (!items?.length) return <div className="empty-state grid place-items-center px-5 py-12 text-center text-muted"><p>{emptyMessage}</p></div>;
   const stableOrder = [...items].sort((a, b) => String(a.id).localeCompare(String(b.id)));
   const colorIndexById = new Map(stableOrder.map((item, i) => [item.id, i]));
   const sorted = [...items].sort((a, b) => b.amount - a.amount);

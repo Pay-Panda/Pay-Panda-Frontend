@@ -175,15 +175,15 @@ export default function SdkPage() {
   useStagger(rootRef, '.sdk-card');
   const copy = async () => { try { await copyToClipboard(samples[active]); toast('Integration sample copied', 'success'); } catch { toast('Could not copy sample', 'error'); } };
   return <div ref={rootRef}>
-    <PageHeader eyebrow="API setup" title="SDK and integration samples" description="Copy-paste backend examples for creating Pay-Panda checkouts and verifying payment redirects." action={<button className="primary-button compact" onClick={copy}><Copy/>Copy sample</button>} />
-    <section className="sdk-grid">
-      {languages.map(lang => <button type="button" className={`panel sdk-card ${active === lang.id ? 'active' : ''}`} key={lang.id} onClick={() => setActive(lang.id)}>
+    <PageHeader eyebrow="API setup" title="SDK and integration samples" description="Copy-paste backend examples for creating Pay-Panda checkouts and verifying payment redirects." action={<button className="primary-button inline-flex min-h-11 items-center justify-center gap-2 rounded-[var(--radius-md)] border-0 bg-gradient-to-br from-violet-600 to-indigo-500 px-4 font-bold text-white shadow-[var(--shadow-glow-accent)] transition disabled:cursor-not-allowed disabled:opacity-60 compact min-h-10 px-3 text-small" onClick={copy}><Copy/>Copy sample</button>} />
+    <section className="sdk-grid grid grid-cols-[260px_1fr] gap-5 max-lg:grid-cols-1">
+      {languages.map(lang => <button type="button" className={`panel overflow-hidden rounded-[var(--radius-lg)] border border-line bg-panel shadow-panel sdk-card rounded-2xl border border-line bg-panel p-4 shadow-panel ${active === lang.id ? 'active' : ''}`} key={lang.id} onClick={() => setActive(lang.id)}>
         <strong>{lang.name}</strong><small>{lang.version}</small>
         <span className="sdk-download"><Server size={14} />Backend sample</span>
       </button>)}
     </section>
-    <section className="panel code-panel">
-      <div><p className="eyebrow accent">Quick start</p><h3>{languages.find(l => l.id === active)?.name} integration</h3><p>Keep App Secret on your server. Create a checkout, redirect the customer to checkout_url, then verify the redirect using /v1/payments/verify.</p></div>
+    <section className="panel overflow-hidden rounded-[var(--radius-lg)] border border-line bg-panel shadow-panel code-panel">
+      <div><p className="eyebrow mb-1 text-[var(--font-micro)] font-extrabold uppercase tracking-[var(--tracking-wide)] text-[var(--muted-2)] accent text-accent-contrast">Quick start</p><h3>{languages.find(l => l.id === active)?.name} integration</h3><p>Keep App Secret on your server. Create a checkout, redirect the customer to checkout_url, then verify the redirect using /v1/payments/verify.</p></div>
       <pre><code>{samples[active]}</code></pre>
     </section>
   </div>;

@@ -10,7 +10,7 @@ export default function TrendChart({ data, emptyMessage = 'No activity in this r
   const gradientId = useId();
   const [hoverIndex, setHoverIndex] = useState(null);
   if (!data?.length) {
-    return <div className="empty-state"><p>{emptyMessage}</p></div>;
+    return <div className="empty-state grid place-items-center px-5 py-12 text-center text-muted"><p>{emptyMessage}</p></div>;
   }
   const values = data.map(d => d.amount);
   const max = Math.max(...values, 1);

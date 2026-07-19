@@ -1,9 +1,9 @@
 import { useState } from 'react';
 import { Eye, EyeOff } from 'lucide-react';
 
-export default function PasswordInput({ value, onChange, className = '', ...props }) {
+export default function PasswordInput({ value, onChange, className='', ...props }) {
   const [show, setShow] = useState(false);
-  return <div className="input-action">
+  return <div className="input-action relative">
     <input
       className={`password-field ${className}`.trim()}
       type={show ? 'text' : 'password'}

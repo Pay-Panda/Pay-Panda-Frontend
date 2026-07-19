@@ -31,9 +31,9 @@ export default function CreatePaymentPage(){
   }, [result]);
   const submit=async event=>{event.preventDefault();const mobile=form.customer_mobile.trim();if(mobile&&mobile.length!==10){const message='Enter a valid 10-digit customer mobile number.';setError(message);toast(message,'error');return}const selected=units.find(unit=>unit.id===form.business_unit_id);const approved=await confirm({title:'Create payment link?',message:`Create a ₹${Number(form.amount).toFixed(2)} payment${selected?` for ${selected.name}`:''} for ${form.customer_name||'this customer'}? The link will expire after ${form.expires_in_minutes} minutes.`,confirmLabel:'Create payment',tone:'warning'});if(!approved)return;setBusy(true);setError('');setResult(null);try{const payload={...form,amount:Number(form.amount),expires_in_minutes:Number(form.expires_in_minutes),customer_mobile:mobile};if(!payload.customer_mobile)delete payload.customer_mobile;if(!payload.customer_email)delete payload.customer_email;if(!payload.redirect_url)delete payload.redirect_url;if(!payload.business_unit_id)delete payload.business_unit_id;const {data}=await api.post('/dashboard/payments',payload);setResult(data.payment);toast('Payment link and QR created');setForm(current=>({...current,order_id:`ORDER-${Date.now()}`}))}catch(err){setError(err.response?.data?.message||'Could not create payment');toast(err.response?.data?.message||'Could not create payment','error')}finally{setBusy(false)}};
   const copyCheckout=async()=>{try{await copyToClipboard(result.checkoutUrl);toast('Checkout link copied','success')}catch{toast('Could not copy checkout link','error')}};
-  return <><PageHeader eyebrow="Payments" title="Create a payment" description="Generate a hosted Pay-Panda checkout and amount-specific UPI QR."/><div className="create-grid">
-    <form className="panel form-panel" onSubmit={submit}>
-      <div className="form-grid">
+  return <><PageHeader eyebrow="Payments" title="Create a payment" description="Generate a hosted Pay-Panda checkout and amount-specific UPI QR."/><div className="create-grid grid grid-cols-[minmax(0,1.1fr)_minmax(320px,.9fr)] gap-5 max-lg:grid-cols-1">
+    <form className="panel overflow-hidden rounded-[var(--radius-lg)] border border-line bg-panel shadow-panel form-panel rounded-[var(--radius-lg)] border border-line bg-panel py-5 shadow-panel" onSubmit={submit}>
+      <div className="form-grid grid grid-cols-2 gap-4 max-md:grid-cols-1">
         <label>Order ID<input required value={form.order_id} onChange={e=>setForm({...form,order_id:e.target.value})}/></label>
         <label>Amount (₹)
           <div className="input-prefix-wrapper">
@@ -42,7 +42,7 @@ export default function CreatePaymentPage(){
           </div>
         </label>
       </div>
-      <div className="form-grid">
+      <div className="form-grid grid grid-cols-2 gap-4 max-md:grid-cols-1">
         <label>Sub-business / branch
           <div className="select-wrap">
             <Building2/>
@@ -51,7 +51,7 @@ export default function CreatePaymentPage(){
               {units.map(unit=><option key={unit.id} value={unit.id}>{unit.name} ({unit.code})</option>)}
             </select>
           </div>
-          <small className="field-help">Separate dashboard totals & history.</small>
+          <small className="field-help mt-1 block text-micro font-normal text-muted">Separate dashboard totals & history.</small>
         </label>
         <label>Payment expiry
           <div className="select-wrap">
@@ -64,10 +64,10 @@ export default function CreatePaymentPage(){
               <option value="60">60 minutes</option>
             </select>
           </div>
-          <small className="field-help">Expires automatically if unpaid.</small>
+          <small className="field-help mt-1 block text-micro font-normal text-muted">Expires automatically if unpaid.</small>
         </label>
       </div>
-      <div className="form-grid">
+      <div className="form-grid grid grid-cols-2 gap-4 max-md:grid-cols-1">
         <label>Customer name<input value={form.customer_name} onChange={e=>setForm({...form,customer_name:e.target.value.replace(/(^\w|\s\w)/g,m=>m.toUpperCase())})}/></label>
         <label>Customer mobile
           <div className="input-prefix-wrapper phone-prefix">
@@ -76,10 +76,10 @@ export default function CreatePaymentPage(){
           </div>
         </label>
       </div>
-      <div className="form-grid">
-        <label>Customer email<input type="email" placeholder="customer@example.com" value={form.customer_email} onChange={e=>setForm({...form,customer_email:e.target.value})}/><small className="field-help">Sends an automatic payment receipt once paid.</small></label>
+      <div className="form-grid grid grid-cols-2 gap-4 max-md:grid-cols-1">
+        <label>Customer email<input type="email" placeholder="customer@example.com" value={form.customer_email} onChange={e=>setForm({...form,customer_email:e.target.value})}/><small className="field-help mt-1 block text-micro font-normal text-muted">Sends an automatic payment receipt once paid.</small></label>
       </div>
-      <div className="form-grid">
+      <div className="form-grid grid grid-cols-2 gap-4 max-md:grid-cols-1">
         <label>Payment reason
           <div className="reason-input-container">
             <input placeholder="Invoice, deposit, order…" value={form.reason} onChange={e=>setForm({...form,reason:e.target.value})}/>
@@ -100,9 +100,9 @@ export default function CreatePaymentPage(){
         <label>Redirect URL<input type="url" placeholder="https://your-site.com/payment-return" value={form.redirect_url} onChange={e=>setForm({...form,redirect_url:e.target.value})}/></label>
       </div>
       <label>Payment description<input placeholder="Add customer-facing comments or payment details" value={form.remark1} onChange={e=>setForm({...form,remark1:e.target.value})}/></label>
-      {error&&<div className="alert error">{error}</div>}
-      <button className="primary-button" disabled={busy}>{busy?<RefreshCw className="spin"/>:<QrCode/>}{busy?'Creating secure QR…':'Create payment QR'}</button>
+      {error&&<div className="alert mt-4 rounded-xl px-4 py-3 text-small error border border-red/25 bg-red/10 text-red">{error}</div>}
+      <button className="primary-button inline-flex min-h-11 items-center justify-center gap-2 rounded-[var(--radius-md)] border-0 bg-gradient-to-br from-violet-600 to-indigo-500 px-4 font-bold text-white shadow-[var(--shadow-glow-accent)] transition disabled:cursor-not-allowed disabled:opacity-60" disabled={busy}>{busy?<RefreshCw className="spin animate-spin"/>:<QrCode/>}{busy?'Creating secure QR…':'Create payment QR'}</button>
     </form>
-    <aside className="panel result-panel" ref={resultRef}>{result?<><div className="result-check">✓</div><p className="eyebrow accent">Payment ready</p><img className="result-qr" src={assetUrl(result.qrPath)} alt="Generated payment QR"/><h3>₹{Number(result.amount).toFixed(2)}</h3><span>{result.businessUnit?`${result.businessUnit.name} · `:''}{result.orderId} · expires {new Date(result.expiresAt).toLocaleTimeString()}</span><div className="link-box"><code>{result.checkoutUrl}</code><button type="button" title="Copy checkout link" onClick={copyCheckout}><Copy/></button></div><a className="primary-button" href={result.checkoutUrl} target="_blank" rel="noreferrer">Open checkout<ExternalLink/></a></>:<div className="empty-state"><QrCode/><h4>Your checkout appears here</h4><p>Complete the form to generate a secure payment page.</p></div>}</aside>
+    <aside className="panel overflow-hidden rounded-[var(--radius-lg)] border border-line bg-panel shadow-panel result-panel rounded-[var(--radius-lg)] border border-line bg-panel p-6 shadow-panel" ref={resultRef}>{result?<><div className="result-check">✓</div><p className="eyebrow mb-1 text-[var(--font-micro)] font-extrabold uppercase tracking-[var(--tracking-wide)] text-[var(--muted-2)] accent text-accent-contrast">Payment ready</p><img className="result-qr" src={assetUrl(result.qrPath)} alt="Generated payment QR"/><h3>₹{Number(result.amount).toFixed(2)}</h3><span>{result.businessUnit?`${result.businessUnit.name} · `:''}{result.orderId} · expires {new Date(result.expiresAt).toLocaleTimeString()}</span><div className="link-box"><code>{result.checkoutUrl}</code><button type="button" title="Copy checkout link" onClick={copyCheckout}><Copy/></button></div><a className="primary-button inline-flex min-h-11 items-center justify-center gap-2 rounded-[var(--radius-md)] border-0 bg-gradient-to-br from-violet-600 to-indigo-500 px-4 font-bold text-white shadow-[var(--shadow-glow-accent)] transition disabled:cursor-not-allowed disabled:opacity-60" href={result.checkoutUrl} target="_blank" rel="noreferrer">Open checkout<ExternalLink/></a></>:<div className="empty-state grid place-items-center px-5 py-12 text-center text-muted"><QrCode/><h4>Your checkout appears here</h4><p>Complete the form to generate a secure payment page.</p></div>}</aside>
   </div></>;
 }

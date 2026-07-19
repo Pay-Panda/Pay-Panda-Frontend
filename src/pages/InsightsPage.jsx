@@ -43,29 +43,29 @@ export default function InsightsPage() {
 
   return <div ref={rootRef}>
     <PageHeader eyebrow="Payments" title="Insights" description="Track performance, transactions, and collected amounts across your whole business and each sub-business." />
-    <article className="panel">
+    <article className="panel overflow-hidden rounded-[var(--radius-lg)] border border-line bg-panel shadow-panel">
       <div className="range-filter">
         <div className="preset-tabs">{presets.map(item => <button key={item} className={preset === item ? 'active' : ''} onClick={() => choosePreset(item)}>{item}</button>)}</div>
         <select value={unitId} onChange={e => setUnitId(e.target.value)}><option value="">All sub-businesses</option>{units.map(unit => <option key={unit.id} value={unit.id}>{unit.name}</option>)}</select>
         <div className="date-inputs"><label>From<input type="date" value={range.from} onChange={e => { setPreset('Custom'); setRange({ ...range, from: e.target.value }); }}/></label><label>To<input type="date" value={range.to} onChange={e => { setPreset('Custom'); setRange({ ...range, to: e.target.value }); }}/></label></div>
       </div>
     </article>
-    <section className="metric-grid">{cards.map(([label, value, Icon, tone]) => <article className={`metric-card ${tone}`} key={label}><div className="metric-icon"><Icon/></div><p>{label}</p><strong>{value}</strong></article>)}</section>
-    <section className="admin-grid">
-      <article className="panel">
-        <div className="panel-heading"><div><h3>Collection trend</h3><p>{insights ? `${new Date(insights.range.from).toLocaleDateString()} – ${new Date(insights.range.to).toLocaleDateString()}` : 'Selected range'}.</p></div></div>
-        <div className="panel-body">{loading ? <div className="empty-cell"><RefreshCw className="spin"/> Loading trend…</div> : <TrendChart data={insights?.trend || []} ariaLabel="Successful payment volume over the selected range" emptyMessage="No payments in this range yet." />}</div>
+    <section className="metric-grid grid grid-cols-[repeat(auto-fit,minmax(190px,1fr))] gap-4">{cards.map(([label, value, Icon, tone]) => <article className={`metric-card relative overflow-hidden rounded-[var(--radius-lg)] border border-line bg-panel p-5 shadow-panel ${tone}`} key={label}><div className="metric-icon grid h-10 w-10 place-items-center rounded-2xl bg-accent/10 text-accent-contrast"><Icon/></div><p>{label}</p><strong>{value}</strong></article>)}</section>
+    <section className="admin-grid grid grid-cols-2 gap-5 max-lg:grid-cols-1">
+      <article className="panel overflow-hidden rounded-[var(--radius-lg)] border border-line bg-panel shadow-panel">
+        <div className="panel-heading flex items-center justify-between gap-4 border-b border-line px-6 py-5"><div><h3>Collection trend</h3><p>{insights ? `${new Date(insights.range.from).toLocaleDateString()} – ${new Date(insights.range.to).toLocaleDateString()}` : 'Selected range'}.</p></div></div>
+        <div className="panel-body p-6">{loading ? <div className="empty-cell px-5 py-12 text-center text-muted"><RefreshCw className="spin animate-spin"/> Loading trend…</div> : <TrendChart data={insights?.trend || []} ariaLabel="Successful payment volume over the selected range" emptyMessage="No payments in this range yet." />}</div>
       </article>
-      <article className="panel">
-        <div className="panel-heading"><div><h3>Payment status</h3><p>All sessions in the selected range.</p></div></div>
+      <article className="panel overflow-hidden rounded-[var(--radius-lg)] border border-line bg-panel shadow-panel">
+        <div className="panel-heading flex items-center justify-between gap-4 border-b border-line px-6 py-5"><div><h3>Payment status</h3><p>All sessions in the selected range.</p></div></div>
         <div className="admin-status-stack">
-          {statusOrder.map(status => <div key={status}><span className={`status status-${status.toLowerCase()}`}><i/>{status}</span><strong>{insights?.byStatus?.[status]?.count || 0}</strong><small>₹{Number(insights?.byStatus?.[status]?.amount || 0).toLocaleString('en-IN')}</small></div>)}
+          {statusOrder.map(status => <div key={status}><span className={`status inline-flex items-center gap-1.5 rounded-full bg-text/5 px-2 py-1 text-micro font-extrabold uppercase tracking-wide status-${status.toLowerCase()}`}><i/>{status}</span><strong>{insights?.byStatus?.[status]?.count || 0}</strong><small>₹{Number(insights?.byStatus?.[status]?.amount || 0).toLocaleString('en-IN')}</small></div>)}
         </div>
       </article>
     </section>
-    {!unitId && <article className="panel">
-      <div className="panel-heading"><div><h3>Sub-business performance</h3><p>Compare collected amount and success rate across every sub-business, including unassigned payments.</p></div></div>
-      {loading ? <div className="empty-cell"><RefreshCw className="spin"/> Loading…</div> : <RankedBars items={unitBars} emptyMessage="No successful payments in this range yet." />}
+    {!unitId && <article className="panel overflow-hidden rounded-[var(--radius-lg)] border border-line bg-panel shadow-panel">
+      <div className="panel-heading flex items-center justify-between gap-4 border-b border-line px-6 py-5"><div><h3>Sub-business performance</h3><p>Compare collected amount and success rate across every sub-business, including unassigned payments.</p></div></div>
+      {loading ? <div className="empty-cell px-5 py-12 text-center text-muted"><RefreshCw className="spin animate-spin"/> Loading…</div> : <RankedBars items={unitBars} emptyMessage="No successful payments in this range yet." />}
     </article>}
   </div>;
 }

@@ -30,9 +30,9 @@ export default function PaymentOptionsPage() {
   };
   return <div ref={rootRef}>
     <PageHeader eyebrow="Gateway setup" title="Payment options" description="Control which QR and UPI app payment elements appear on your hosted checkout." />
-    <div className="create-grid">
-      <section className="panel">
-        <div className="panel-heading"><div><h3>Checkout layout</h3><p>Choose what customers see when they open a payment link.</p></div>{busy && <RefreshCw className="spin" size={16}/>}</div>
+    <div className="create-grid grid grid-cols-[minmax(0,1.1fr)_minmax(320px,.9fr)] gap-5 max-lg:grid-cols-1">
+      <section className="panel overflow-hidden rounded-[var(--radius-lg)] border border-line bg-panel shadow-panel">
+        <div className="panel-heading flex items-center justify-between gap-4 border-b border-line px-6 py-5"><div><h3>Checkout layout</h3><p>Choose what customers see when they open a payment link.</p></div>{busy && <RefreshCw className="spin animate-spin" size={16}/>}</div>
         <div className="option-list">
           {options.map(option => <div className="toggle-row" key={option.value}>
             <span className="toggle-row-icon"><option.icon /></span>
@@ -41,12 +41,12 @@ export default function PaymentOptionsPage() {
           </div>)}
         </div>
       </section>
-      <aside className="panel result-panel">
-        <p className="eyebrow accent">Live preview</p>
+      <aside className="panel overflow-hidden rounded-[var(--radius-lg)] border border-line bg-panel shadow-panel result-panel rounded-[var(--radius-lg)] border border-line bg-panel p-6 shadow-panel">
+        <p className="eyebrow mb-1 text-[var(--font-micro)] font-extrabold uppercase tracking-[var(--tracking-wide)] text-[var(--muted-2)] accent text-accent-contrast">Live preview</p>
         <div className="mini-checkout">
           <div className="mini-checkout-head"><span className="mini-avatar">P</span><div><small>Paying</small><strong>{user?.business?.name || 'Your Business'}</strong></div></div>
           {active !== 'button' && <div className="mini-qr" />}
-          {active !== 'qr' && <button className="upi-pay-button" type="button" disabled><Smartphone />Pay with a UPI app</button>}
+          {active !== 'qr' && <button className="upi-pay-button mx-auto inline-flex h-11 w-[248px] items-center justify-center gap-2 rounded-[var(--radius-md)] border border-accent/25 bg-accent/10 text-small font-bold text-accent-contrast" type="button" disabled><Smartphone />Pay with a UPI app</button>}
         </div>
       </aside>
     </div>

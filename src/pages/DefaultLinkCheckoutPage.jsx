@@ -27,12 +27,12 @@ export default function DefaultLinkCheckoutPage() {
     } catch (err) { setError(err.response?.data?.message || 'Could not start payment.'); setBusy(false); }
   };
 
-  if (error) return <div className="checkout"><div className="pay-card"><div className="empty-state"><Clock3/><h2>{error}</h2></div></div></div>;
-  if (!link) return <div className="checkout"><div className="checkout-loader">Loading payment link…</div></div>;
+  if (error) return <div className="checkout grid min-h-screen place-items-center overflow-hidden bg-bg p-5 text-text"><div className="pay-card relative w-[min(520px,100%)] overflow-hidden rounded-[28px] border border-line bg-panel p-7 shadow-elevated"><div className="empty-state grid place-items-center px-5 py-12 text-center text-muted"><Clock3/><h2>{error}</h2></div></div></div>;
+  if (!link) return <div className="checkout grid min-h-screen place-items-center overflow-hidden bg-bg p-5 text-text"><div className="checkout-loader">Loading payment link…</div></div>;
 
-  return <div className={`checkout theme-${link.business.theme || 'midnight'}`}>
+  return <div className={`checkout grid min-h-screen place-items-center overflow-hidden bg-bg p-5 text-text theme-${link.business.theme || 'midnight'}`}>
     <div className="checkout-orb one"/><div className="checkout-orb two"/>
-    <main className="pay-card">
+    <main className="pay-card relative w-[min(520px,100%)] overflow-hidden rounded-[28px] border border-line bg-panel p-7 shadow-elevated">
       <div className="checkout-head"><div className="checkout-brand">{link.business.name[0]}</div><div><p>Paying</p><strong>{link.business.name}</strong></div></div>
       <form onSubmit={submit} className="default-link-form">
         <label>Amount (₹)
@@ -44,8 +44,8 @@ export default function DefaultLinkCheckoutPage() {
         <label>Mobile number (optional)<input inputMode="numeric" maxLength={15} value={form.customer_mobile} onChange={e => setForm({ ...form, customer_mobile: e.target.value.replace(/\D/g, '').slice(0, 15) })}/></label>
         <label>Email (optional — for a payment receipt)<input type="email" value={form.customer_email} onChange={e => setForm({ ...form, customer_email: e.target.value })}/></label>
         {link.label && <p className="default-link-note">{link.label}</p>}
-        {error && <div className="alert error">{error}</div>}
-        <button className="primary-button" disabled={busy}>{busy ? 'Preparing QR…' : 'Continue to pay'}<ArrowRight size={18}/></button>
+        {error && <div className="alert mt-4 rounded-xl px-4 py-3 text-small error border border-red/25 bg-red/10 text-red">{error}</div>}
+        <button className="primary-button inline-flex min-h-11 items-center justify-center gap-2 rounded-[var(--radius-md)] border-0 bg-gradient-to-br from-violet-600 to-indigo-500 px-4 font-bold text-white shadow-[var(--shadow-glow-accent)] transition disabled:cursor-not-allowed disabled:opacity-60" disabled={busy}>{busy ? 'Preparing QR…' : 'Continue to pay'}<ArrowRight size={18}/></button>
       </form>
     </main>
   </div>;

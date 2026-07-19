@@ -232,9 +232,9 @@ export default function DocumentationPage() {
   return <div ref={rootRef}>
     <PageHeader eyebrow="API setup" title="Developer documentation" description="Production API contract for OAuth, payment creation, hosted checkout redirects, and server-side verification." />
     <section className="docs-checklist">
-      {['Create credentials', 'Get OAuth token', 'Create checkout', 'Verify after redirect'].map(item => <article className="panel" key={item}><CheckCircle2/><span>{item}</span></article>)}
+      {['Create credentials', 'Get OAuth token', 'Create checkout', 'Verify after redirect'].map(item => <article className="panel overflow-hidden rounded-[var(--radius-lg)] border border-line bg-panel shadow-panel" key={item}><CheckCircle2/><span>{item}</span></article>)}
     </section>
-    <section className="panel docs-layout">
+    <section className="panel overflow-hidden rounded-[var(--radius-lg)] border border-line bg-panel shadow-panel docs-layout">
       <nav className="docs-nav"><ul>{sections.map(item => <li key={item.id}><button type="button" className={active === item.id ? 'active' : ''} onClick={() => setActive(item.id)}><BookOpen size={14} />{item.title}</button></li>)}</ul></nav>
       <div className="docs-content">
         <h3>{section.title}</h3>

@@ -34,9 +34,9 @@ export default function PaymentThemePage() {
 
   return <div ref={rootRef}>
     <PageHeader eyebrow="Gateway setup" title="Payment page theme" description="Brand the hosted checkout with your logo, colors, and an entirely different page layout — not just a recolor." />
-    <div className="create-grid">
-      <section className="panel">
-        <div className="panel-heading"><div><h3>Theme presets</h3><p>Each preset is its own layout template, not just a different palette.</p></div>{busy && <RefreshCw className="spin" size={16}/>}</div>
+    <div className="create-grid grid grid-cols-[minmax(0,1.1fr)_minmax(320px,.9fr)] gap-5 max-lg:grid-cols-1">
+      <section className="panel overflow-hidden rounded-[var(--radius-lg)] border border-line bg-panel shadow-panel">
+        <div className="panel-heading flex items-center justify-between gap-4 border-b border-line px-6 py-5"><div><h3>Theme presets</h3><p>Each preset is its own layout template, not just a different palette.</p></div>{busy && <RefreshCw className="spin animate-spin" size={16}/>}</div>
         <div className="theme-grid">
           {templates.map(item => <button type="button" className={`theme-swatch ${active === item.id ? 'active' : ''}`} key={item.id} onClick={() => choose(item.id)} style={{ '--swatch-bg': item.bg, '--swatch-accent': item.accent, '--swatch-text': item.text }}>
             <span className="theme-swatch-preview" />
@@ -47,8 +47,8 @@ export default function PaymentThemePage() {
         </div>
         <p className="theme-detail">{t.description}</p>
       </section>
-      <aside className="panel result-panel theme-preview-panel">
-        <p className="eyebrow accent">Live preview — {t.layout}</p>
+      <aside className="panel overflow-hidden rounded-[var(--radius-lg)] border border-line bg-panel shadow-panel result-panel rounded-[var(--radius-lg)] border border-line bg-panel p-6 shadow-panel theme-preview-panel">
+        <p className="eyebrow mb-1 text-[var(--font-micro)] font-extrabold uppercase tracking-[var(--tracking-wide)] text-[var(--muted-2)] accent text-accent-contrast">Live preview — {t.layout}</p>
         <MiniCheckout template={t} vars={vars} />
       </aside>
     </div>
@@ -64,7 +64,7 @@ function MiniCheckout({ template, vars }) {
           <span className="mini-avatar">P</span>
           <small>Paying</small><strong>Your Business</strong>
           <div className="mini-split-amount">₹499.00</div>
-          <button className="upi-pay-button" type="button" disabled><Smartphone />Pay with a UPI app</button>
+          <button className="upi-pay-button mx-auto inline-flex h-11 w-[248px] items-center justify-center gap-2 rounded-[var(--radius-md)] border border-accent/25 bg-accent/10 text-small font-bold text-accent-contrast" type="button" disabled><Smartphone />Pay with a UPI app</button>
         </div>
         <div className="mini-split-qr"><div className="mini-qr" /></div>
       </div>
@@ -82,13 +82,13 @@ function MiniCheckout({ template, vars }) {
       <div className="mini-banner"><span className="mini-avatar">P</span><div><small>Paying</small><strong>Your Business</strong></div><em>₹499.00</em></div>
       <div className="mini-banner-body">
         <div className="mini-qr" />
-        <button className="upi-pay-button" type="button" disabled><Smartphone />Pay with a UPI app</button>
+        <button className="upi-pay-button mx-auto inline-flex h-11 w-[248px] items-center justify-center gap-2 rounded-[var(--radius-md)] border border-accent/25 bg-accent/10 text-small font-bold text-accent-contrast" type="button" disabled><Smartphone />Pay with a UPI app</button>
       </div>
     </div>;
   }
   return <div {...props}>
     <div className="mini-checkout-head"><span className="mini-avatar">P</span><div><small>Paying</small><strong>Your Business</strong></div><em>₹499.00</em></div>
     <div className="mini-qr" />
-    <button className="upi-pay-button" type="button" disabled><Smartphone />Pay with a UPI app</button>
+    <button className="upi-pay-button mx-auto inline-flex h-11 w-[248px] items-center justify-center gap-2 rounded-[var(--radius-md)] border border-accent/25 bg-accent/10 text-small font-bold text-accent-contrast" type="button" disabled><Smartphone />Pay with a UPI app</button>
   </div>;
 }
