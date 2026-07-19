@@ -87,7 +87,7 @@ export default function AppLayout() {
       </div>
     </aside>
     <SidebarTooltip tooltip={tooltip} />
-    <main className="main min-h-screen transition-all duration-300 lg:pl-[272px]">
+    <main className="main min-h-screen transition-all duration-300">
       <header className="topbar sticky top-0 z-20 flex min-h-[82px] items-center justify-between border-b border-line bg-bg/90 px-8 backdrop-blur-xl">
         <div><button className="menu-button grid h-10 w-10 place-items-center rounded-xl border border-line bg-panel text-text lg:hidden" onClick={() => setOpen(true)}><Menu /></button><p className="eyebrow mb-1 text-[var(--font-micro)] font-extrabold uppercase tracking-[var(--tracking-wide)] text-[var(--muted-2)]">Workspace</p><h1>{user?.business?.name || 'Console'}</h1></div>
         <div className="top-actions flex items-center gap-3"><button className="icon-button grid h-10 w-10 place-items-center rounded-xl border border-line bg-panel text-text transition hover:border-accent" title={`Switch to ${theme === 'dark' ? 'light' : 'dark'} mode`} onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}>{theme === 'dark' ? <Sun size={18}/> : <Moon size={18}/>}</button><div className="user-chip flex items-center gap-3 rounded-2xl border border-line bg-panel px-3 py-2"><span>{user?.name?.[0] || 'P'}</span><div><strong>{user?.name}</strong><small>{user?.business?.name}</small></div></div></div>
