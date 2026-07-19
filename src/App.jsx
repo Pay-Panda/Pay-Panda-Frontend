@@ -12,6 +12,7 @@ import AdminPlansPage from './pages/admin/AdminPlansPage';
 import AuthPage from './pages/AuthPage';
 import LandingPage from './pages/LandingPage';
 import DashboardPage from './pages/DashboardPage';
+import InsightsPage from './pages/InsightsPage';
 import ConnectPage from './pages/ConnectPage';
 import ApiKeysPage from './pages/ApiKeysPage';
 import CreatePaymentPage from './pages/CreatePaymentPage';
@@ -55,6 +56,7 @@ export default function App() {
     <Route path="/pay/:publicId" element={<CheckoutPage />} />
     <Route element={<Protected />}>
       <Route path="/dashboard" element={<DashboardPage />} />
+      <Route path="/insights" element={<InsightsPage />} />
       <Route path="/connect" element={<ConnectPage />} />
       <Route path="/api-keys" element={<ApiKeysPage />} />
       <Route path="/business-units" element={<BusinessUnitsPage />} />

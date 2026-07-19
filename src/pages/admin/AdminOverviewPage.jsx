@@ -3,34 +3,53 @@ import { Link } from 'react-router-dom';
 import { Building2, ShieldOff, Users, IndianRupee, RefreshCw } from 'lucide-react';
 import adminApi from '../../lib/adminApi';
 import PageHeader from '../../components/PageHeader';
-import AdminTrendChart from '../../components/admin/AdminTrendChart';
+import TrendChart from '../../components/charts/TrendChart';
+import RankedBars from '../../components/charts/RankedBars';
 import { useUi } from '../../state/ui-store';
 import useStagger from '../../hooks/useStagger';
+
+const presets = ['Today', 'This week', 'This month', 'This year', 'Custom'];
 
 export default function AdminOverviewPage() {
   const [overview, setOverview] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [preset, setPreset] = useState('This month');
+  const [range, setRange] = useState(() => rangeFor('This month'));
   const rootRef = useRef(null);
   const { toast } = useUi();
-  useEffect(() => {
-    adminApi.get('/admin/insights/overview').then(({ data }) => setOverview(data.overview))
+
+  const load = () => {
+    setLoading(true);
+    adminApi.get('/admin/insights/overview', { params: { from: range.from, to: range.to } }).then(({ data }) => setOverview(data.overview))
       .catch(() => toast('Could not load platform insights', 'error')).finally(() => setLoading(false));
-  }, [toast]);
+  };
+  useEffect(load, [range.from, range.to]); // eslint-disable-line react-hooks/exhaustive-deps
   useStagger(rootRef, '.metric-card', { dependency: loading });
+
+  const choosePreset = value => { setPreset(value); if (value !== 'Custom') setRange(rangeFor(value)); };
+
   const cards = [
     ['Total businesses', loading ? '—' : overview?.businesses.total ?? 0, Building2, 'violet'],
     ['Suspended', loading ? '—' : overview?.businesses.suspended ?? 0, ShieldOff, 'amber'],
     ['Registered users', loading ? '—' : overview?.users ?? 0, Users, 'blue'],
-    ['Lifetime collected', loading ? '—' : `₹${(overview?.lifetimePayments.amount || 0).toLocaleString('en-IN')}`, IndianRupee, 'green'],
+    ['Collected in range', loading ? '—' : `₹${(overview?.rangePayments.amount || 0).toLocaleString('en-IN')}`, IndianRupee, 'green'],
   ];
+  const topBusinessBars = (overview?.topBusinesses || []).map(b => ({ id: b.id, label: b.label, amount: b.amount, count: b.count, successRate: null }));
+
   return <div ref={rootRef}>
     <PageHeader eyebrow="Platform" title="Admin overview" description="Growth, activity, and health across every business on Pay-Panda." />
     <section className="metric-grid">{cards.map(([label, value, Icon, tone]) => <article className={`metric-card ${tone}`} key={label}><div className="metric-icon"><Icon/></div><p>{label}</p><strong>{value}</strong></article>)}</section>
+    <article className="panel">
+      <div className="range-filter">
+        <div className="preset-tabs">{presets.map(item => <button key={item} className={preset === item ? 'active' : ''} onClick={() => choosePreset(item)}>{item}</button>)}</div>
+        <div className="date-inputs"><label>From<input type="date" value={range.from} onChange={e => { setPreset('Custom'); setRange({ ...range, from: e.target.value }); }}/></label><label>To<input type="date" value={range.to} onChange={e => { setPreset('Custom'); setRange({ ...range, to: e.target.value }); }}/></label></div>
+      </div>
+    </article>
     <section className="admin-grid">
       <article className="panel">
-        <div className="panel-heading"><div><h3>Successful payment volume</h3><p>Last 30 days, platform-wide.</p></div></div>
+        <div className="panel-heading"><div><h3>Successful payment volume</h3><p>{overview ? `${new Date(overview.range.from).toLocaleDateString()} – ${new Date(overview.range.to).toLocaleDateString()}` : 'Selected range'}, platform-wide.</p></div></div>
         <div className="panel-body">
-          {loading ? <div className="empty-cell"><RefreshCw className="spin"/> Loading trend…</div> : <AdminTrendChart data={overview?.trend || []} />}
+          {loading ? <div className="empty-cell"><RefreshCw className="spin"/> Loading trend…</div> : <TrendChart data={overview?.trend || []} ariaLabel="Platform-wide successful payment volume" emptyMessage="No payment activity in this range." />}
         </div>
       </article>
       <article className="panel">
@@ -41,6 +60,10 @@ export default function AdminOverviewPage() {
       </article>
     </section>
     <article className="panel">
+      <div className="panel-heading"><div><h3>Top businesses by volume</h3><p>Ranked by successful payment amount in the selected range.</p></div></div>
+      {loading ? <div className="empty-cell"><RefreshCw className="spin"/> Loading…</div> : <RankedBars items={topBusinessBars} emptyMessage="No successful payments in this range yet." />}
+    </article>
+    <article className="panel">
       <div className="panel-heading"><div><h3>Recently onboarded businesses</h3><p>Latest five sign-ups.</p></div><Link to="/admin/businesses">View all</Link></div>
       <div className="table-wrap"><table><thead><tr><th>Business</th><th>Joined</th><th>Status</th></tr></thead><tbody>
         {loading ? <tr><td colSpan="3" className="empty-cell"><RefreshCw className="spin"/> Loading…</td></tr> : overview?.recentBusinesses.length ? overview.recentBusinesses.map(b => <tr key={b.id}><td><Link to={`/admin/businesses/${b.id}`}><strong>{b.name}</strong></Link></td><td>{new Date(b.createdAt).toLocaleDateString()}</td><td><span className={`status ${b.suspendedAt ? 'status-failed' : 'status-active'}`}><i/>{b.suspendedAt ? 'Suspended' : 'Active'}</span></td></tr>) : <tr><td colSpan="3" className="empty-cell">No businesses yet.</td></tr>}
@@ -48,3 +71,13 @@ export default function AdminOverviewPage() {
     </article>
   </div>;
 }
+
+function rangeFor(preset) {
+  const now = new Date(); let start = new Date(now);
+  if (preset === 'Today') start.setHours(0, 0, 0, 0);
+  if (preset === 'This week') { const day = (now.getDay() + 6) % 7; start.setDate(now.getDate() - day); start.setHours(0, 0, 0, 0); }
+  if (preset === 'This month') start = new Date(now.getFullYear(), now.getMonth(), 1);
+  if (preset === 'This year') start = new Date(now.getFullYear(), 0, 1);
+  return { from: localDate(start), to: localDate(now) };
+}
+function localDate(value) { const offset = value.getTimezoneOffset() * 60000; return new Date(value - offset).toISOString().slice(0, 10); }

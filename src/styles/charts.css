@@ -1,0 +1,47 @@
+/* Shared chart primitives (business Insights page + admin Overview/Business detail).
+   Categorical series colors are the dataviz-skill validated 4-slot set — fixed order,
+   assigned by stable entity identity (never by current rank), first 4 slots only;
+   a 5th+ series folds into "series-other" (muted, no false identity). */
+
+:root {
+  /* Dark is this app's default (see tokens.css) — dark-mode series steps. */
+  --series-1: #3987e5; /* blue */
+  --series-2: #008300; /* green */
+  --series-3: #d55181; /* magenta */
+  --series-4: #c98500; /* yellow */
+}
+[data-theme="light"] {
+  --series-1: #2a78d6;
+  --series-2: #008300;
+  --series-3: #e87ba4;
+  --series-4: #eda100;
+}
+
+.series-dot { display: inline-block; width: 8px; height: 8px; border-radius: 50%; background: currentColor; margin-right: 7px; flex: none; }
+.series-1 { color: var(--series-1); }
+.series-2 { color: var(--series-2); }
+.series-3 { color: var(--series-3); }
+.series-4 { color: var(--series-4); }
+.series-other { color: var(--muted-2); }
+
+.ranked-bars { display: grid; gap: 14px; padding: 20px 22px; }
+.ranked-bar-row { display: grid; grid-template-columns: minmax(140px, 1fr) minmax(0, 2fr) auto; align-items: center; gap: 14px; }
+.ranked-bar-label { display: flex; align-items: center; flex-wrap: wrap; gap: 2px 8px; font-size: var(--font-small); min-width: 0; }
+.ranked-bar-label strong { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.ranked-bar-label small { width: 100%; margin-left: 15px; color: var(--muted); font-size: var(--font-micro); }
+.ranked-bar-track { height: 8px; border-radius: var(--radius-full); background: var(--panel-inset); overflow: hidden; }
+.ranked-bar-fill { height: 100%; border-radius: var(--radius-full); background: currentColor; transition: width .3s ease; }
+.ranked-bar-value { font-size: var(--font-small); font-weight: 700; font-variant-numeric: tabular-nums; white-space: nowrap; }
+
+/* Date-range filter row, reused by business Insights and admin Overview/Business detail */
+.range-filter { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; padding: 15px 20px; border-bottom: 1px solid var(--line); }
+.range-filter .preset-tabs { display: flex; gap: 4px; flex-wrap: wrap; }
+.range-filter .date-inputs { display: flex; gap: 8px; align-items: center; margin-left: auto; }
+.range-filter .date-inputs input { height: 34px; padding: 0 10px; border: 1px solid var(--line); background: var(--panel-inset); color: var(--text); border-radius: var(--radius-sm); font-size: var(--font-small); }
+.range-filter select { height: 34px; padding: 0 10px; border: 1px solid var(--line); background: var(--panel-inset); color: var(--text); border-radius: var(--radius-sm); font-size: var(--font-small); }
+
+@media (max-width: 700px) {
+  .ranked-bar-row { grid-template-columns: 1fr; gap: 6px; }
+  .ranked-bar-value { text-align: right; }
+  .range-filter .date-inputs { margin-left: 0; width: 100%; }
+}

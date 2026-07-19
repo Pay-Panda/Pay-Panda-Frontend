@@ -3,6 +3,8 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { ArrowLeft, ShieldOff, ShieldCheck, RefreshCw, X, Layers, Landmark, Building2, KeyRound, Link2, ReceiptIndianRupee, Store, ToggleLeft, ToggleRight } from 'lucide-react';
 import adminApi from '../../lib/adminApi';
 import PageHeader from '../../components/PageHeader';
+import TrendChart from '../../components/charts/TrendChart';
+import RankedBars from '../../components/charts/RankedBars';
 import { useUi } from '../../state/ui-store';
 import useModalEnter from '../../hooks/useModalEnter';
 
@@ -13,6 +15,7 @@ export default function AdminBusinessDetailPage() {
   const [paymentTotals, setPaymentTotals] = useState(null);
   const [paymentStatusBreakdown, setPaymentStatusBreakdown] = useState({});
   const [mainUnitTotals, setMainUnitTotals] = useState(null);
+  const [trend, setTrend] = useState([]);
   const [recentPayments, setRecentPayments] = useState([]);
   const [providerTransactions, setProviderTransactions] = useState([]);
   const [plans, setPlans] = useState([]);
@@ -34,6 +37,7 @@ export default function AdminBusinessDetailPage() {
         setPaymentTotals(b.data.paymentTotals);
         setPaymentStatusBreakdown(b.data.paymentStatusBreakdown || {});
         setMainUnitTotals(b.data.mainUnitTotals || null);
+        setTrend(b.data.trend || []);
         setRecentPayments(b.data.recentPayments || []);
         setProviderTransactions(b.data.recentProviderTransactions || []);
         setPlans(p.data.plans);
@@ -153,11 +157,25 @@ export default function AdminBusinessDetailPage() {
       </article>
     </section>
 
+    <section className="admin-grid">
+      <article className="panel">
+        <div className="panel-heading"><div><h3>Payment volume</h3><p>Last 30 days, this business only.</p></div></div>
+        <div className="panel-body"><TrendChart data={trend} ariaLabel={`Successful payment volume for ${business.name}`} emptyMessage="No payment activity in the last 30 days." /></div>
+      </article>
+      <article className="panel">
+        <div className="panel-heading"><div><h3>Sub-business comparison</h3><p>Collected amount by unit, including the main business.</p></div></div>
+        <RankedBars items={[
+          { id: 'main', label: 'Main business', amount: Number(mainUnitTotals?.amount || 0), count: mainUnitTotals?.count || 0, successRate: null },
+          ...(business.businessUnits || []).map(unit => ({ id: unit.id, label: unit.name, amount: Number(unit.totals?.amount || 0), count: unit.totals?.count || 0, successRate: null })),
+        ].filter(item => item.count > 0)} emptyMessage="No successful payments yet." />
+      </article>
+    </section>
+
     <section className="panel">
       <div className="panel-heading"><div><h3>Sub-business supervision</h3><p>Collections are still settled through the same business account, but reporting is separated by unit.</p></div><Building2/></div>
       <form className="admin-inline-create" onSubmit={createUnit}>
         <label>Name<input required placeholder="Branch A, Retail counter…" value={unitForm.name} onChange={e => setUnitForm({ ...unitForm, name: e.target.value, code: unitForm.code || slug(e.target.value) })}/></label>
-        <label>Code<input required placeholder="branch-a" value={unitForm.code} onChange={e => setUnitForm({ ...unitForm, code: slug(e.target.value) })}/></label>
+        <label>Code<input required placeholder="branch-a" value={unitForm.code} onChange={e => setUnitForm({ ...unitForm, code: sanitizeCodeInput(e.target.value) })}/></label>
         <label>Description<input placeholder="Optional internal note" value={unitForm.description} onChange={e => setUnitForm({ ...unitForm, description: e.target.value })}/></label>
         <button className="primary-button compact" disabled={unitBusy}>{unitBusy ? <RefreshCw className="spin"/> : <Store/>}{unitBusy ? 'Creating…' : 'Create sub-business'}</button>
       </form>
@@ -221,6 +239,13 @@ function formatDate(value) {
   return new Date(value).toLocaleString();
 }
 
+// One-shot derivation from Name — safe to trim/collapse since it only runs once, not per keystroke.
 function slug(value) {
-  return String(value || '').toLowerCase().trim().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '').slice(0, 40);
+  return String(value || '').toLowerCase().trim().replace(/[^a-z0-9_-]+/g, '-').replace(/^[-_]+|[-_]+$/g, '').slice(0, 40);
+}
+
+// Live typing in the Code field itself — never trims, or a trailing "-"/"_" (which is where it
+// always lands while typing left-to-right) gets stripped back out before the next keystroke.
+function sanitizeCodeInput(value) {
+  return String(value || '').toLowerCase().replace(/[^a-z0-9_-]/g, '').slice(0, 40);
 }

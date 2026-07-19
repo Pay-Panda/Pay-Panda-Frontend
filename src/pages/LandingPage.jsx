@@ -1,10 +1,11 @@
-import { useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useGSAP } from '@gsap/react';
 import {
   ArrowRight, BadgeCheck, KeyRound, QrCode, Globe, ShieldCheck, Timer, Wallet,
-  LineChart, Lock, RefreshCw, CheckCircle2, Smartphone,
+  LineChart, Lock, RefreshCw, CheckCircle2, Smartphone, Check,
 } from 'lucide-react';
+import api from '../lib/api';
 import { useAuth } from '../state/auth-store';
 import useSmoothScroll from '../hooks/useSmoothScroll';
 import { gsap, REDUCED_MOTION_QUERY, EASE_ENTRANCE } from '../lib/motion';
@@ -37,7 +38,9 @@ const security = [
 export default function LandingPage() {
   const { token } = useAuth();
   const rootRef = useRef(null);
+  const [plans, setPlans] = useState([]);
   useSmoothScroll();
+  useEffect(() => { api.get('/public/plans').then(({ data }) => setPlans(data.plans)).catch(() => {}); }, []);
   useGSAP(() => {
     const mm = gsap.matchMedia();
     mm.add(REDUCED_MOTION_QUERY, () => {
@@ -60,6 +63,7 @@ export default function LandingPage() {
       <nav>
         <a href="#features">Features</a>
         <a href="#how-it-works">How it works</a>
+        {plans.length > 0 && <a href="#pricing">Pricing</a>}
         <a href="#security">Security</a>
       </nav>
       <div className="landing-nav-actions">
@@ -124,6 +128,25 @@ export default function LandingPage() {
         </li>)}
       </ol>
     </section>
+
+    {plans.length > 0 && <section className="landing-section alt landing-content" id="pricing">
+      <div className="landing-section-head">
+        <p className="eyebrow accent">Simple pricing</p>
+        <h2>Pick the plan that matches your volume</h2>
+        <p>No shared settlement fees — just a monthly plan for your payment volume. Upgrade any time from your dashboard.</p>
+      </div>
+      <div className="pricing-grid reveal-group">
+        {plans.map(plan => <article className="panel pricing-tier" key={plan.id}>
+          <h3>{plan.name}</h3>
+          <div className="pricing-amount"><strong>₹{plan.price.toLocaleString('en-IN')}</strong><span>/month</span></div>
+          <p className="pricing-limit">{plan.monthlyPaymentLimit ? `${plan.monthlyPaymentLimit.toLocaleString('en-IN')} payments / month` : 'Unlimited payments'}</p>
+          {Array.isArray(plan.features) && plan.features.length > 0 && <ul className="pricing-features">
+            {plan.features.map(feature => <li key={feature}><Check size={14} />{feature}</li>)}
+          </ul>}
+          <Link className="primary-button" to="/signup">Get started<ArrowRight size={16}/></Link>
+        </article>)}
+      </div>
+    </section>}
 
     <section className="landing-section landing-content" id="security">
       <div className="landing-section-head">

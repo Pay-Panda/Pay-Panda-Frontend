@@ -8,7 +8,7 @@ export default function DefaultLinkCheckoutPage() {
   const navigate = useNavigate();
   const [link, setLink] = useState(null);
   const [error, setError] = useState('');
-  const [form, setForm] = useState({ amount: '', customer_name: '', customer_mobile: '' });
+  const [form, setForm] = useState({ amount: '', customer_name: '', customer_mobile: '', customer_email: '' });
   const [busy, setBusy] = useState(false);
 
   useEffect(() => {
@@ -18,7 +18,11 @@ export default function DefaultLinkCheckoutPage() {
   const submit = async event => {
     event.preventDefault(); setBusy(true); setError('');
     try {
-      const { data } = await api.post(`/public/link/${slug}/pay`, form);
+      const payload = { ...form };
+      if (!payload.customer_name) delete payload.customer_name;
+      if (!payload.customer_mobile) delete payload.customer_mobile;
+      if (!payload.customer_email) delete payload.customer_email;
+      const { data } = await api.post(`/public/link/${slug}/pay`, payload);
       navigate(`/pay/${data.payment.id}`, { replace: true });
     } catch (err) { setError(err.response?.data?.message || 'Could not start payment.'); setBusy(false); }
   };
@@ -38,6 +42,7 @@ export default function DefaultLinkCheckoutPage() {
         </label>
         <label>Your name (optional)<input value={form.customer_name} onChange={e => setForm({ ...form, customer_name: e.target.value })}/></label>
         <label>Mobile number (optional)<input inputMode="numeric" maxLength={15} value={form.customer_mobile} onChange={e => setForm({ ...form, customer_mobile: e.target.value.replace(/\D/g, '').slice(0, 15) })}/></label>
+        <label>Email (optional — for a payment receipt)<input type="email" value={form.customer_email} onChange={e => setForm({ ...form, customer_email: e.target.value })}/></label>
         {link.label && <p className="default-link-note">{link.label}</p>}
         {error && <div className="alert error">{error}</div>}
         <button className="primary-button" disabled={busy}>{busy ? 'Preparing QR…' : 'Continue to pay'}<ArrowRight size={18}/></button>

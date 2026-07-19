@@ -6,11 +6,11 @@ const PAD_X = 12;
 const PAD_TOP = 16;
 const PAD_BOTTOM = 28;
 
-export default function AdminTrendChart({ data }) {
+export default function TrendChart({ data, emptyMessage = 'No activity in this range.', ariaLabel = 'Payment volume over time' }) {
   const gradientId = useId();
   const [hoverIndex, setHoverIndex] = useState(null);
   if (!data?.length) {
-    return <div className="empty-state"><p>No payment activity in the last 30 days.</p></div>;
+    return <div className="empty-state"><p>{emptyMessage}</p></div>;
   }
   const values = data.map(d => d.amount);
   const max = Math.max(...values, 1);
@@ -18,7 +18,7 @@ export default function AdminTrendChart({ data }) {
   const plotHeight = HEIGHT - PAD_TOP - PAD_BOTTOM;
   const stepX = data.length > 1 ? plotWidth / (data.length - 1) : 0;
   const points = data.map((d, i) => ({
-    x: PAD_X + stepX * i,
+    x: PAD_X + (data.length > 1 ? stepX * i : plotWidth / 2),
     y: PAD_TOP + plotHeight - (d.amount / max) * plotHeight,
     ...d,
   }));
@@ -35,7 +35,7 @@ export default function AdminTrendChart({ data }) {
   };
 
   return <div className="admin-chart">
-    <svg viewBox={`0 0 ${WIDTH} ${HEIGHT}`} role="img" aria-label="Successful payment volume, last 30 days"
+    <svg viewBox={`0 0 ${WIDTH} ${HEIGHT}`} role="img" aria-label={ariaLabel}
       onMouseMove={handleMove} onMouseLeave={() => setHoverIndex(null)}>
       <defs>
         <linearGradient id={gradientId} x1="0" y1="0" x2="0" y2="1">
