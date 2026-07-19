@@ -16,7 +16,7 @@ export default function BusinessUnitsPage() {
     event.preventDefault();
     setBusy(true);
     try {
-      await api.post('/dashboard/business-units', { ...form, code: slug(form.code || form.name) });
+      await api.post('/dashboard/business-units', { ...form, code: finalizeCode(form.code || form.name) });
       setForm({ name: '', code: '', description: '' });
       toast('Sub-business created', 'success');
       load();
@@ -36,7 +36,7 @@ export default function BusinessUnitsPage() {
       <form className="panel form-panel" onSubmit={submit}>
         <div className="panel-heading"><div><h3>Create sub-business</h3><p>Payments can be tagged to this unit during API or dashboard creation.</p></div><Store/></div>
         <label>Name<input required placeholder="Studio orders, Retail counter, Branch A…" value={form.name} onChange={e => setForm({ ...form, name: e.target.value, code: form.code || slug(e.target.value) })}/></label>
-        <label>Code<input required placeholder="branch-a" value={form.code} onChange={e => setForm({ ...form, code: slug(e.target.value) })}/><small className="field-help">Use this as <code>business_unit_code</code> in API calls.</small></label>
+        <label>Code<input required placeholder="branch-a" value={form.code} onChange={e => setForm({ ...form, code: sanitizeCodeInput(e.target.value) })}/><small className="field-help">Use this as <code>business_unit_code</code> in API calls.</small></label>
         <label>Description<input placeholder="Optional internal note" value={form.description} onChange={e => setForm({ ...form, description: e.target.value })}/></label>
         <button className="primary-button" disabled={busy}>{busy ? <RefreshCw className="spin"/> : <Building2/>}{busy ? 'Creating…' : 'Create sub-business'}</button>
       </form>
@@ -56,6 +56,21 @@ export default function BusinessUnitsPage() {
   </div>;
 }
 
+// Used only to auto-derive a code from the Name field — collapses spaces/punctuation into
+// dashes and trims the ends, since that's a one-shot derivation, not something typed live.
 function slug(value) {
   return String(value || '').toLowerCase().trim().replace(/[^a-z0-9_-]+/g, '-').replace(/^[-_]+|[-_]+$/g, '').slice(0, 40);
+}
+
+// Used on every keystroke in the Code field itself: only strips characters the backend would
+// reject, without collapsing or trimming anything — so typing "-" or "_" (including at the
+// end, which is where they always land while typing left-to-right) never gets stripped back out.
+function sanitizeCodeInput(value) {
+  return String(value || '').toLowerCase().replace(/[^a-z0-9_-]/g, '').slice(0, 40);
+}
+
+// Final safety net at submit time: the backend requires the code to start with a letter/number,
+// so strip any leading dash/underscore a user could have typed manually.
+function finalizeCode(value) {
+  return slug(value);
 }
