@@ -57,5 +57,5 @@ export default function BusinessUnitsPage() {
 }
 
 function slug(value) {
-  return String(value || '').toLowerCase().trim().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '').slice(0, 40);
+  return String(value || '').toLowerCase().trim().replace(/[^a-z0-9_-]+/g, '-').replace(/^[-_]+|[-_]+$/g, '').slice(0, 40);
 }

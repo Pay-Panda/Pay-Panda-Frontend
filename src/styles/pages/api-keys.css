@@ -30,7 +30,12 @@
 .credential-actions svg { width: 11px; }
 
 .inline-field { font-size: var(--font-micro); color: var(--muted); }
-.inline-field input { width: 180px; height: 35px; margin-top: 4px; }
+.inline-field input, .inline-field select { width: 180px; height: 35px; margin-top: 4px; border: 1px solid var(--line-strong); background: var(--panel-inset); color: var(--text); border-radius: var(--radius-sm); padding: 0 10px; }
+.inline-field select { width: 220px; }
+.credential-create-fields { display: flex; gap: 18px; align-items: flex-end; flex-wrap: wrap; }
+
+.credential-scope-tag { display: block !important; text-align: left !important; color: var(--accent-contrast) !important; font-size: var(--font-micro) !important; margin-top: 3px; }
+.credential-scope-note { font-size: var(--font-small); color: var(--accent-contrast); margin-top: 10px; padding: 10px; background: var(--accent-soft); border-radius: var(--radius-sm); }
 
 /* Legacy secret/credential-row variants kept for compatibility */
 .secret-reveal { display: flex; gap: 15px; padding: 18px; border: 1px solid color-mix(in srgb, var(--amber) 22%, transparent); background: var(--amber-soft); border-radius: 14px; margin-bottom: 18px; color: var(--amber); }
