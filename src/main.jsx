@@ -3,6 +3,7 @@ import { createRoot } from 'react-dom/client';
 import { BrowserRouter } from 'react-router-dom';
 import { GoogleOAuthProvider } from '@react-oauth/google';
 import './index.css';
+import './legacy.css';
 import App from './App.jsx';
 import { AuthProvider } from './state/AuthContext.jsx';
 import { AdminAuthProvider } from './state/AdminAuthContext.jsx';
