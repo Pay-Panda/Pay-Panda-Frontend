@@ -17,18 +17,30 @@
 .vault-dismiss { height: 34px; padding: 0 12px; border: 1px solid var(--line); background: transparent; border-radius: 8px; font-size: var(--font-micro); color: var(--text); }
 .credential-modal { width: min(720px, 100%); margin: 0; grid-template-columns: auto 1fr; max-height: 90vh; overflow: auto; }
 .credential-modal .vault-dismiss { grid-column: 1/-1; width: 100%; height: 41px; }
-.credential-create-modal { width: min(560px, 100%); text-align: left; }
-.credential-create-modal .modal-kicker { width: 44px; height: 44px; border-radius: var(--radius-md); background: var(--accent-soft-strong); color: var(--accent-contrast); display: grid; place-items: center; margin-bottom: 12px; }
-.credential-create-modal .modal-kicker svg { width: 19px; }
-.credential-create-modal h2 { margin-bottom: 8px; }
-.modal-subcopy { margin: 0 0 18px; color: var(--muted); font-size: var(--font-small); line-height: 1.6; }
-.credential-create-modal label { display: grid; gap: 7px; margin-top: 14px; color: var(--text-secondary); font-size: var(--font-small); font-weight: 800; }
+.credential-create-modal {
+  width: min(610px, calc(100vw - 40px));
+  max-height: calc(100vh - 64px);
+  padding: 34px 36px 36px;
+  text-align: left;
+  overflow: auto;
+  scrollbar-width: thin;
+}
+.credential-create-modal .modal-close { top: 18px; right: 18px; z-index: 2; }
+.credential-create-modal .modal-kicker { width: 46px; height: 46px; border-radius: var(--radius-md); background: var(--accent-soft-strong); color: var(--accent-contrast); display: grid; place-items: center; margin: 0 0 15px; }
+.credential-create-modal .modal-kicker svg { width: 20px; }
+.credential-create-modal .eyebrow { margin-bottom: 12px; }
+.credential-create-modal h2 { margin: 0 42px 14px 0; line-height: 1.15; }
+.modal-subcopy { margin: 0 0 22px; color: var(--muted); font-size: var(--font-small); line-height: 1.7; max-width: 92%; }
+.credential-create-modal label { display: grid; gap: 8px; margin-top: 17px; color: var(--text-secondary); font-size: 12px; font-weight: 750; }
 .credential-create-modal input,
-.credential-create-modal select { width: 100%; height: 42px; border: 1px solid var(--line-strong); background: var(--panel-inset); color: var(--text); border-radius: var(--radius-sm); padding: 0 12px; font: inherit; }
-.credential-create-modal label small { color: var(--muted); font-size: var(--font-micro); font-weight: 650; line-height: 1.5; }
-.credential-create-note { display: flex; gap: 9px; align-items: flex-start; margin-top: 16px; padding: 12px; background: var(--amber-soft); border: 1px solid color-mix(in srgb, var(--amber) 24%, transparent); border-radius: var(--radius-sm); color: var(--amber); font-size: var(--font-micro); line-height: 1.5; }
+.credential-create-modal select { width: 100%; height: 52px; border: 1px solid var(--line-strong); background: var(--panel-inset); color: var(--text); border-radius: var(--radius-sm); padding: 0 15px; font: inherit; font-size: 13px; outline: none; }
+.credential-create-modal input:focus,
+.credential-create-modal select:focus { border-color: var(--accent); box-shadow: 0 0 0 3px var(--accent-soft); }
+.credential-create-modal label small { color: var(--muted); font-size: 10px; font-weight: 650; line-height: 1.5; margin-top: 2px; }
+.credential-create-note { display: flex; gap: 10px; align-items: flex-start; margin-top: 20px; padding: 13px 14px; background: var(--amber-soft); border: 1px solid color-mix(in srgb, var(--amber) 24%, transparent); border-radius: var(--radius-sm); color: var(--amber); font-size: 10px; line-height: 1.55; }
 .credential-create-note svg { width: 16px; flex: none; margin-top: 1px; }
-.credential-form-actions { margin-top: 18px; }
+.credential-form-actions { margin-top: 24px; }
+.credential-form-actions button { height: 50px; }
 .credential-form-actions .dialog-confirm { display: inline-flex; align-items: center; justify-content: center; gap: 7px; }
 .credential-form-actions .dialog-confirm svg { width: 15px; }
 
