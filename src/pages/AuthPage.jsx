@@ -22,6 +22,7 @@ const countryCodes = [
 export default function AuthPage({ mode }) {
   const signup = mode === 'signup';
   const [form, setForm] = useState({ name: '', businessName: '', email: '', mobile: '', countryCode: '91', password: '' });
+  const [acceptedTerms, setAcceptedTerms] = useState(false);
   const [error, setError] = useState(''); const [busy, setBusy] = useState(false);
   const [activation, setActivation] = useState(null);
   const [needsActivation,setNeedsActivation]=useState(false);
@@ -109,7 +110,8 @@ export default function AuthPage({ mode }) {
       {error && <div className="alert mt-4 rounded-xl px-4 py-3 text-small error border border-red/25 bg-red/10 text-red">{error}</div>}
       {needsActivation&&<button type="button" className="resend-button" onClick={async()=>{try{const {data}=await api.post('/auth/resend-activation',{email:form.email});setActivation({message:data.message,url:data.developmentActivationUrl});setNeedsActivation(false);setError('')}catch(err){const message=err.response?.data?.message||'Could not resend activation email';toast(message,'error')}}}>Resend activation email</button>}
       {activation && <div className="activation-sent"><CheckCircle2/><div><strong>Check your email</strong><p>{activation.message}</p>{activation.url&&<a href={activation.url}>Open development activation link</a>}</div></div>}
-      {!activation && <button className="primary-button inline-flex min-h-11 items-center justify-center gap-2 rounded-[var(--radius-md)] border-0 bg-gradient-to-br from-violet-600 to-indigo-500 px-4 font-bold text-white shadow-[var(--shadow-glow-accent)] transition disabled:cursor-not-allowed disabled:opacity-60" disabled={busy}>{busy ? 'Please wait…' : signup ? 'Create account' : 'Sign in'}<ArrowRight size={18}/></button>}
+      {signup && !activation && <label className="terms-check flex items-start gap-2 text-small"><input type="checkbox" required checked={acceptedTerms} onChange={e=>setAcceptedTerms(e.target.checked)}/><span>I agree to Pay-Panda's <Link to="/terms" target="_blank" rel="noreferrer">Terms &amp; Conditions</Link></span></label>}
+      {!activation && <button className="primary-button inline-flex min-h-11 items-center justify-center gap-2 rounded-[var(--radius-md)] border-0 bg-gradient-to-br from-violet-600 to-indigo-500 px-4 font-bold text-white shadow-[var(--shadow-glow-accent)] transition disabled:cursor-not-allowed disabled:opacity-60" disabled={busy||(signup&&!acceptedTerms)}>{busy ? 'Please wait…' : signup ? 'Create account' : 'Sign in'}<ArrowRight size={18}/></button>}
       <p className="auth-switch">{signup ? 'Already registered?' : 'New to Pay-Panda?'} <Link to={signup ? '/login' : '/signup'}>{signup ? 'Sign in' : 'Create account'}</Link></p>
     </form>}</main>
   </div>;

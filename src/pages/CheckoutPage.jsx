@@ -1,6 +1,6 @@
 import { useCallback,useEffect,useRef,useState } from 'react';
 import { useNavigate,useParams } from 'react-router-dom';
-import { ArrowLeft,Check,Clock3,ExternalLink,ShieldCheck,Smartphone } from 'lucide-react';
+import { ArrowLeft,Check,Clock3,ExternalLink,Flag,ShieldCheck,Smartphone,X } from 'lucide-react';
 import { gsap } from 'gsap';
 import { useGSAP } from '@gsap/react';
 import api, { assetUrl } from '../lib/api';
@@ -24,7 +24,7 @@ export default function CheckoutPage(){
   const done=payment.status==='SUCCESS';const expired=payment.status==='EXPIRED';
   const theme=payment.business.theme||'midnight';
   const goBack=()=>redirectTarget?window.location.assign(redirectTarget):(window.history.length>1?navigate(-1):navigate('/'));
-  return <div className={`checkout grid min-h-screen place-items-center overflow-hidden bg-bg p-5 text-text theme-${theme}`} ref={root}><div className="checkout-orb one"/><div className="checkout-orb two"/><main className={`pay-card relative w-[min(520px,100%)] overflow-hidden rounded-[28px] border border-line bg-panel p-7 shadow-elevated layout-${theme}`}>{done?<div className="paid-state"><div className="confetti-layer">{Array.from({length:52},(_,i)=><i className="confetti-piece" key={i} style={{background:colors[i%colors.length],left:`${35+(i%11)*3}%`}}/>)}</div><div className="paid-check"><Check/></div><p className="eyebrow mb-1 text-[var(--font-micro)] font-extrabold uppercase tracking-[var(--tracking-wide)] text-[var(--muted-2)] accent text-accent-contrast">Payment confirmed</p><h1>₹{Number(payment.amount).toFixed(2)}</h1><p>Received from {payment.payerName||payment.customerName||'customer'} {payment.payerHandle?`via ${payment.payerHandle}`:''}</p><div className="receipt-row flex justify-between border-t border-line py-3 text-small"><span>Order</span><strong>{payment.orderId}</strong></div><div className="receipt-row flex justify-between border-t border-line py-3 text-small"><span>Payment ID</span><strong>{payment.id}</strong></div><div className="receipt-row flex justify-between border-t border-line py-3 text-small"><span>Paid at</span><strong>{payment.paidAt?new Date(payment.paidAt).toLocaleString():'Confirmed'}</strong></div><div className="receipt-row flex justify-between border-t border-line py-3 text-small"><span>Bank RRN</span><strong>{payment.bankReferenceNo||'Confirmed'}</strong></div><button className="primary-button inline-flex min-h-11 items-center justify-center gap-2 rounded-[var(--radius-md)] border-0 bg-gradient-to-br from-violet-600 to-indigo-500 px-4 font-bold text-white shadow-[var(--shadow-glow-accent)] transition disabled:cursor-not-allowed disabled:opacity-60 return-button" onClick={goBack}>{redirecting?<><ExternalLink/>Redirecting in 4 seconds…</>:<><ArrowLeft/>Return to previous page</>}</button></div>:expired?<div className="expired-state"><Clock3/><p className="eyebrow mb-1 text-[var(--font-micro)] font-extrabold uppercase tracking-[var(--tracking-wide)] text-[var(--muted-2)]">Payment link expired</p><h2>This QR is no longer active</h2><p>No payment was matched within the configured payment window.</p><button className="primary-button inline-flex min-h-11 items-center justify-center gap-2 rounded-[var(--radius-md)] border-0 bg-gradient-to-br from-violet-600 to-indigo-500 px-4 font-bold text-white shadow-[var(--shadow-glow-accent)] transition disabled:cursor-not-allowed disabled:opacity-60" onClick={goBack}><ArrowLeft/>Go back</button></div>:<PendingContent payment={payment} publicId={publicId} left={left} theme={theme}/>}<footer><ShieldCheck/>Secured and verified by Pay-Panda</footer></main></div>;
+  return <div className={`checkout grid min-h-screen place-items-center overflow-hidden bg-bg p-5 text-text theme-${theme}`} ref={root}><div className="checkout-orb one"/><div className="checkout-orb two"/><main className={`pay-card relative w-[min(520px,100%)] overflow-hidden rounded-[28px] border border-line bg-panel p-7 shadow-elevated layout-${theme}`}>{done?<div className="paid-state"><div className="confetti-layer">{Array.from({length:52},(_,i)=><i className="confetti-piece" key={i} style={{background:colors[i%colors.length],left:`${35+(i%11)*3}%`}}/>)}</div><div className="paid-check"><Check/></div><p className="eyebrow mb-1 text-[var(--font-micro)] font-extrabold uppercase tracking-[var(--tracking-wide)] text-[var(--muted-2)] accent text-accent-contrast">Payment confirmed</p><h1>₹{Number(payment.amount).toFixed(2)}</h1><p>Received from {payment.payerName||payment.customerName||'customer'} {payment.payerHandle?`via ${payment.payerHandle}`:''}</p><div className="receipt-row flex justify-between border-t border-line py-3 text-small"><span>Order</span><strong>{payment.orderId}</strong></div><div className="receipt-row flex justify-between border-t border-line py-3 text-small"><span>Payment ID</span><strong>{payment.id}</strong></div><div className="receipt-row flex justify-between border-t border-line py-3 text-small"><span>Paid at</span><strong>{payment.paidAt?new Date(payment.paidAt).toLocaleString():'Confirmed'}</strong></div><div className="receipt-row flex justify-between border-t border-line py-3 text-small"><span>Bank RRN</span><strong>{payment.bankReferenceNo||'Confirmed'}</strong></div><button className="primary-button inline-flex min-h-11 items-center justify-center gap-2 rounded-[var(--radius-md)] border-0 bg-gradient-to-br from-violet-600 to-indigo-500 px-4 font-bold text-white shadow-[var(--shadow-glow-accent)] transition disabled:cursor-not-allowed disabled:opacity-60 return-button" onClick={goBack}>{redirecting?<><ExternalLink/>Redirecting in 4 seconds…</>:<><ArrowLeft/>Return to previous page</>}</button></div>:expired?<div className="expired-state"><Clock3/><p className="eyebrow mb-1 text-[var(--font-micro)] font-extrabold uppercase tracking-[var(--tracking-wide)] text-[var(--muted-2)]">Payment link expired</p><h2>This QR is no longer active</h2><p>No payment was matched within the configured payment window.</p><button className="primary-button inline-flex min-h-11 items-center justify-center gap-2 rounded-[var(--radius-md)] border-0 bg-gradient-to-br from-violet-600 to-indigo-500 px-4 font-bold text-white shadow-[var(--shadow-glow-accent)] transition disabled:cursor-not-allowed disabled:opacity-60" onClick={goBack}><ArrowLeft/>Go back</button></div>:<PendingContent payment={payment} publicId={publicId} left={left} theme={theme}/>}<footer><ShieldCheck/>Secured and verified by Pay-Panda</footer><ReportProblem publicId={publicId}/></main></div>;
 }
 
 function QrBlock({publicId}){return <div className="qr-shell"><img src={assetUrl(`/api/public/payments/${publicId}/qr`)} alt="Payment QR"/></div>;}
@@ -50,6 +50,35 @@ function PendingContent({payment,publicId,left,theme}){
   if(theme==='emerald')return <><PayElements payment={payment} publicId={publicId}/><strong className="checkout-minimal-amount">₹{Number(payment.amount).toFixed(2)}</strong><p className="checkout-minimal-name">{payment.business.name}</p>{status}</>;
   if(theme==='sunrise')return <>{head}<div className="checkout-banner-body"><PayElements payment={payment} publicId={publicId}/>{person}{detail}{description}{status}</div></>;
   return <>{head}<PayElements payment={payment} publicId={publicId}/>{person}{detail}{description}{status}</>;
+}
+
+function ReportProblem({publicId}){
+  const {toast}=useUi();
+  const [open,setOpen]=useState(false);const [message,setMessage]=useState('');const [contact,setContact]=useState('');const [busy,setBusy]=useState(false);const [sent,setSent]=useState(false);
+  const submit=async event=>{
+    event.preventDefault();setBusy(true);
+    try{await api.post(`/public/payments/${publicId}/complaints`,{message,filerContact:contact||undefined});setSent(true);toast('Complaint filed — the business and Pay-Panda have been notified','success')}
+    catch(err){toast(err.response?.data?.message||'Could not file complaint','error')}
+    finally{setBusy(false)}
+  };
+  return <>
+    <button className="report-problem-link" type="button" onClick={()=>setOpen(true)}><Flag size={13}/>Report a problem with this payment</button>
+    {open&&<div className="modal-backdrop fixed inset-0 z-[100] grid place-items-center bg-black/70 p-5 backdrop-blur-sm" onMouseDown={()=>setOpen(false)}>
+      <div className="modal-card relative max-h-[90vh] w-[min(460px,100%)] overflow-auto rounded-[19px] border border-line bg-panel p-7 shadow-elevated" onMouseDown={e=>e.stopPropagation()}>
+        <button className="modal-close absolute right-4 top-4 grid h-9 w-9 place-items-center rounded-xl border border-line bg-transparent text-text transition hover:border-accent" onClick={()=>setOpen(false)}><X/></button>
+        {sent?<div className="paid-check"><Check/></div>:null}
+        {sent?<><h2>Complaint filed</h2><p>The business and Pay-Panda can now see this on their end. No login was needed — your payment ID was enough.</p></>:<>
+          <h2>Report a problem</h2>
+          <p>No account needed — this is tied to payment <strong>{publicId}</strong>.</p>
+          <form onSubmit={submit}>
+            <label>What went wrong?<textarea className="admin-textarea w-full rounded-xl border border-line bg-panel-inset p-3 text-body text-text outline-none focus:border-accent" required minLength={5} maxLength={1000} rows={4} value={message} onChange={e=>setMessage(e.target.value)} placeholder="Describe the issue…"/></label>
+            <label>Your email or mobile (optional, so the business can reach you)<input value={contact} onChange={e=>setContact(e.target.value)} placeholder="you@example.com"/></label>
+            <button className="primary-button inline-flex min-h-11 items-center justify-center gap-2 rounded-[var(--radius-md)] border-0 bg-gradient-to-br from-violet-600 to-indigo-500 px-4 font-bold text-white shadow-[var(--shadow-glow-accent)] transition disabled:cursor-not-allowed disabled:opacity-60" disabled={busy}>{busy?'Filing…':'File complaint'}</button>
+          </form>
+        </>}
+      </div>
+    </div>}
+  </>;
 }
 
 function buildRedirectUrl(payment){if(!payment?.redirectUrl||payment.status!=='SUCCESS')return'';try{const url=new URL(payment.redirectUrl);url.searchParams.set('pay_panda_payment_id',payment.id);url.searchParams.set('order_id',payment.orderId);url.searchParams.set('status',payment.status);if(payment.bankReferenceNo)url.searchParams.set('bank_rrn',payment.bankReferenceNo);return url.toString()}catch{return payment.redirectUrl}}

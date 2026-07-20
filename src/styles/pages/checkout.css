@@ -40,6 +40,8 @@
 .checkout-status strong { margin-left: auto; color: var(--amber); font-variant-numeric: tabular-nums; }
 .pay-card footer { display: flex; align-items: center; justify-content: center; gap: 6px; color: var(--muted-2); font-size: var(--font-micro); margin-top: 18px; }
 .pay-card footer svg { width: 13px; }
+.report-problem-link { display: flex; align-items: center; justify-content: center; gap: 6px; width: 100%; margin-top: 10px; background: transparent; border: 0; color: var(--muted-2); font-size: var(--font-micro); font-weight: 700; cursor: pointer; }
+.report-problem-link:hover { color: var(--text); }
 
 .return-button { width: 100%; margin-top: 20px; }
 .paid-state { text-align: center; padding: 35px 5px; }

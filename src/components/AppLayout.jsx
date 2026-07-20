@@ -8,7 +8,7 @@ import SidebarTooltip from '../components/SidebarTooltip';
 import {
   LayoutDashboard, QrCode, SlidersHorizontal, Palette, BadgeIndianRupee, KeyRound,
   Code2, BookOpen, Link2, History, ReceiptIndianRupee, Settings, Headphones,
-  LogOut, Menu, X, Moon, Sun, ChevronLeft, ChevronRight, PlusCircle, Building2, LineChart,
+  LogOut, Menu, X, Moon, Sun, ChevronLeft, ChevronRight, PlusCircle, Building2, LineChart, Flag,
 } from 'lucide-react';
 import payLogo from '../assets/logo.png';
 
@@ -23,6 +23,7 @@ const sections = [
     { to: '/default-link', icon: Link2, label: 'Default link' },
     { to: '/business-units', icon: Building2, label: 'Sub-businesses' },
     { to: '/subscription-history', icon: ReceiptIndianRupee, label: 'Subscription history' },
+    { to: '/complaints', icon: Flag, label: 'Complaints' },
   ]},
   { label: 'Gateway setup', items: [
     { to: '/connect', icon: QrCode, label: 'Connect UPI QR' },

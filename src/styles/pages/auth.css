@@ -74,3 +74,6 @@
 .activation-sent strong { font-size: var(--font-small); }
 .activation-sent p { font-size: var(--font-micro); color: var(--muted); margin: 4px 0; }
 .activation-sent a { font-size: var(--font-micro); text-decoration: underline; }
+.terms-check { margin: 16px 0; color: var(--muted); }
+.terms-check input { margin-top: 3px; width: 16px; height: 16px; accent-color: var(--accent-contrast); flex: none; }
+.terms-check a { color: var(--text); font-weight: 700; text-decoration: underline; }

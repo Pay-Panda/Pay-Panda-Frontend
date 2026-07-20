@@ -56,6 +56,9 @@ td small { font-size: var(--font-micro); color: var(--muted-2); margin-top: 4px;
 .status-pending { color: var(--amber); background: var(--amber-soft); }
 .status-failed, .status-error { color: var(--red); background: var(--red-soft); }
 .status-expired { color: var(--muted); }
+.status-open { color: var(--amber); background: var(--amber-soft); }
+.status-investigating { color: var(--blue, #3987e5); background: color-mix(in srgb, var(--blue, #3987e5) 14%, transparent); }
+.status-resolved { color: var(--green); background: var(--green-soft); }
 
 .quick-panel ol, .guide-panel ol { list-style: none; padding: 8px 22px 19px; margin: 0; }
 .quick-panel li, .guide-panel li { display: flex; align-items: center; gap: 12px; padding: 13px 0; border-bottom: 1px solid var(--line); }

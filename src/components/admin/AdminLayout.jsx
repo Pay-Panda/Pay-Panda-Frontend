@@ -3,13 +3,14 @@ import { NavLink, Outlet, useLocation } from 'react-router-dom';
 import { useAdminAuth } from '../../state/admin-auth-store';
 import usePageTransition from '../../hooks/usePageTransition';
 import useSmoothScroll from '../../hooks/useSmoothScroll';
-import { LayoutDashboard, Building2, Layers, LogOut, Menu, X, Moon, Sun } from 'lucide-react';
+import { LayoutDashboard, Building2, Layers, Flag, LogOut, Menu, X, Moon, Sun } from 'lucide-react';
 import payLogo from '../../assets/logo.png';
 
 const items = [
   { to: '/admin/overview', icon: LayoutDashboard, label: 'Overview' },
   { to: '/admin/businesses', icon: Building2, label: 'Businesses' },
   { to: '/admin/plans', icon: Layers, label: 'Plans' },
+  { to: '/admin/complaints', icon: Flag, label: 'Complaints' },
 ];
 
 export default function AdminLayout() {

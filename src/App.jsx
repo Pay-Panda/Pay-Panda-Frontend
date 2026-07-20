@@ -31,6 +31,9 @@ import DocumentationPage from './pages/DocumentationPage';
 import DefaultLinkPage from './pages/DefaultLinkPage';
 import SubscriptionHistoryPage from './pages/SubscriptionHistoryPage';
 import BusinessUnitsPage from './pages/BusinessUnitsPage';
+import ComplaintsPage from './pages/ComplaintsPage';
+import TermsPage from './pages/TermsPage';
+import AdminComplaintsPage from './pages/admin/AdminComplaintsPage';
 
 function Protected() {
   const { token, loading } = useAuth();
@@ -52,6 +55,7 @@ export default function App() {
     <Route path="/activate" element={<ActivationPage />} />
     <Route path="/forgot-password" element={<ForgotPasswordPage />} />
     <Route path="/reset-password" element={<ResetPasswordPage />} />
+    <Route path="/terms" element={<TermsPage />} />
     <Route path="/pay/link/:slug" element={<DefaultLinkCheckoutPage />} />
     <Route path="/pay/:publicId" element={<CheckoutPage />} />
     <Route element={<Protected />}>
@@ -71,6 +75,7 @@ export default function App() {
       <Route path="/documentation" element={<DocumentationPage />} />
       <Route path="/default-link" element={<DefaultLinkPage />} />
       <Route path="/subscription-history" element={<SubscriptionHistoryPage />} />
+      <Route path="/complaints" element={<ComplaintsPage />} />
     </Route>
     <Route path="/admin/login" element={<AdminLoginPage />} />
     <Route element={<AdminProtected />}>
@@ -78,6 +83,7 @@ export default function App() {
       <Route path="/admin/businesses" element={<AdminBusinessesPage />} />
       <Route path="/admin/businesses/:id" element={<AdminBusinessDetailPage />} />
       <Route path="/admin/plans" element={<AdminPlansPage />} />
+      <Route path="/admin/complaints" element={<AdminComplaintsPage />} />
       <Route path="/admin" element={<Navigate to="/admin/overview" replace />} />
     </Route>
     <Route path="*" element={<Navigate to="/dashboard" replace />} />

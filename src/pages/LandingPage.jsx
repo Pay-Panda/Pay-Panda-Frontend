@@ -168,6 +168,7 @@ export default function LandingPage() {
     <footer className="landing-footer landing-content relative z-10 mx-auto max-w-6xl px-6">
       <div className="brand flex items-center gap-3"><img className="brand-mark h-10 w-10 rounded-xl object-contain" src={payLogo} alt="Pay-Panda" /><strong>Pay-Panda</strong></div>
       <p>© {new Date().getFullYear()} Pay-Panda. UPI payment verification, not a payment aggregator.</p>
+      <Link to="/terms">Terms &amp; Conditions</Link>
     </footer>
   </div>;
 }
